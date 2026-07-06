@@ -906,7 +906,7 @@ export default function App() {
         <header class="oc-masthead">
           <div>
             <h1>Opportunity Central</h1>
-            <p>Official Central Portal &amp; Directory | Opportunity Pancakes (IHOP Franchisee)</p>
+            <p>One Stop Portal &amp; Directory | Opportunity Pancakes (IHOP Franchisee)</p>
           </div>
           <div className="flex items-center gap-6 flex-wrap md:flex-nowrap">
             {/* Opportunity Pancakes Logo (Official high-fidelity vector) */}
