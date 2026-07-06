@@ -1340,8 +1340,8 @@ export default function App() {
 
         {/* Footer */}
         <footer class="oc-footer">
-          <div>© 2026 Opportunity Pancakes. Powered by Microsoft Power Pages.</div>
-          <div className="text-xs text-slate-400 font-normal">Opportunity Central Operations Desk &bull; IHOP Franchisee</div>
+          <div>© 2026 Lumps Are Good</div>
+          <div className="text-xs text-slate-400 font-normal">We <3 You &bull; But You've Reached The End</div>
         </footer>
 
         {/* Floating Interactive Toast Feedback */}
