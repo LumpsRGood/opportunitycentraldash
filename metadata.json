@@ -1,0 +1,6 @@
+{
+  "name": "Opportunity Central",
+  "description": "Official Central Portal & Directory for Opportunity Pancakes (IHOP Franchisee)",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
