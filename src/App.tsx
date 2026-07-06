@@ -1341,7 +1341,7 @@ export default function App() {
         {/* Footer */}
         <footer class="oc-footer">
           <div>© 2026 Lumps Are Good</div>
-          <div className="text-xs text-slate-400 font-normal">We <3 You &bull; But You've Reached The End</div>
+          <div className="text-xs text-slate-400 font-normal">We 🫶 You &bull; But You've Reached The End</div>
         </footer>
 
         {/* Floating Interactive Toast Feedback */}
