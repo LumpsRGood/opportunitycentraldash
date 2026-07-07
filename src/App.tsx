@@ -29,7 +29,8 @@ import {
   Home,
   Users,
   Wrench,
-  Monitor
+  Monitor,
+  BookOpen
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 
@@ -99,6 +100,17 @@ const DOCUMENTS = [
     bandClass: 'blue',
     bandIcon: '♨',
     link: 'https://opportunityrestaurantgroup.sharepoint.com/sites/OpportunityCentral/Shared%20Documents/2026%20Core%201%20Expanded%20Temperature%20Log.pdf?web=1'
+  },
+  {
+    id: 'doc-ga-haccp',
+    title: 'Georgia HACCP Guide',
+    description: 'Guidelines for Hazard Analysis and Critical Control Point compliance.',
+    category: 'Food Safety',
+    format: 'PDF',
+    icon: BookOpen,
+    bandClass: 'purple',
+    bandIcon: '✩',
+    link: 'https://opportunityrestaurantgroup.sharepoint.com/:w:/s/OpportunityCentral/IQBOUq1vGVwLT5oTMB8Xy3C_ASZXJaz_HzV6FUM7clnAlNA?e=FTfuds'
   }
 ];
 
@@ -901,9 +913,9 @@ export default function App() {
         }
       `}</style>
 
-      <main id="mainContent" class="oc-portal">
+      <main id="mainContent" className="oc-portal">
         {/* Header Section */}
-        <header class="oc-masthead">
+        <header className="oc-masthead">
           <div>
             <h1>Opportunity Central</h1>
             <p>One Stop Portal &amp; Directory | Opportunity Pancakes (IHOP Franchisee)</p>
@@ -937,8 +949,8 @@ export default function App() {
         </header>
 
         {/* Dynamic Sticky Navigation Menu */}
-        <div class="oc-tabs-container">
-          <nav class="oc-tabs" aria-label="Opportunity Central sections">
+        <div className="oc-tabs-container">
+          <nav className="oc-tabs" aria-label="Opportunity Central sections">
             <button 
               className={`flex items-center gap-2 ${activeTab === 'home' ? 'active' : ''}`} 
               onClick={() => handleTabClick('home')}
@@ -978,17 +990,17 @@ export default function App() {
         </div>
 
         {/* Welcome Block */}
-        <section id="home" ref={sectionRefs.home} class="oc-welcome">
-          <div class="oc-info-icon" aria-hidden="true">i</div>
+        <section id="home" ref={sectionRefs.home} className="oc-welcome">
+          <div className="oc-info-icon" aria-hidden="true">i</div>
           <p className="text-sm m-0" style={{ color: '#3b5c38', fontWeight: 500, lineHeight: '1.5' }}>
             <strong style={{ color: 'var(--oc-green-dark)', fontWeight: 800 }}>Welcome to Opportunity Central:</strong> Your single point of access for all operational templates, checklists, and contact rules. Use the dashboard below to open forms or reference submission rules instantly.
           </p>
         </section>
 
         {/* Documents Panel */}
-        <section id="documents" ref={sectionRefs.documents} class="oc-panel oc-documents">
-          <div class="oc-section-heading">
-            <span class="oc-icon" aria-hidden="true">
+        <section id="documents" ref={sectionRefs.documents} className="oc-panel oc-documents">
+          <div className="oc-section-heading">
+            <span className="oc-icon" aria-hidden="true">
               <Layers size={20} className="text-emerald-700" />
             </span>
             <div>
@@ -1023,7 +1035,7 @@ export default function App() {
           </div>
 
           {/* Grid of Cards with beautiful enter animations */}
-          <div class="oc-card-grid">
+          <div className="oc-card-grid">
             <AnimatePresence>
               {filteredDocs.length > 0 ? (
                 filteredDocs.map((doc, idx) => {
@@ -1035,9 +1047,9 @@ export default function App() {
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, scale: 0.95 }}
                       transition={{ duration: 0.25, delay: idx * 0.03 }}
-                      class="oc-doc-card"
+                      className="oc-doc-card"
                     >
-                      <div class={`oc-card-band ${doc.bandClass} flex items-center gap-4 relative px-6 py-5`} style={{ minHeight: '88px' }}>
+                      <div className={`oc-card-band ${doc.bandClass} flex items-center gap-4 relative px-6 py-5`} style={{ minHeight: '88px' }}>
                         <div className="bg-white/15 p-2 rounded-lg shrink-0">
                           <IconComponent size={22} className="text-white stroke-[2.5]" />
                         </div>
@@ -1049,7 +1061,7 @@ export default function App() {
                       <p className="mx-6 mt-4 mb-5 text-sm text-slate-500 leading-relaxed flex-grow">{doc.description}</p>
                       
                       <a 
-                        class="oc-download" 
+                        className="oc-download" 
                         href={doc.link} 
                         target="_blank" 
                         rel="noopener"
@@ -1072,9 +1084,9 @@ export default function App() {
         </section>
 
         {/* Facilities Section */}
-        <section id="facilities" ref={sectionRefs.facilities} class="oc-panel">
-          <div class="oc-section-heading">
-            <span class="oc-icon" aria-hidden="true">
+        <section id="facilities" ref={sectionRefs.facilities} className="oc-panel">
+          <div className="oc-section-heading">
+            <span className="oc-icon" aria-hidden="true">
               <Wrench size={20} className="text-emerald-700" />
             </span>
             <div>
@@ -1083,10 +1095,10 @@ export default function App() {
             </div>
           </div>
 
-          <div class="oc-card-grid">
+          <div className="oc-card-grid">
             {/* IT Request Card */}
-            <article class="oc-doc-card">
-              <div class="oc-card-band purple flex items-center gap-4 relative px-6 py-5" style={{ minHeight: '88px' }}>
+            <article className="oc-doc-card">
+              <div className="oc-card-band purple flex items-center gap-4 relative px-6 py-5" style={{ minHeight: '88px' }}>
                 <div className="bg-white/15 p-2 rounded-lg shrink-0">
                   <Monitor size={22} className="text-white stroke-[2.5]" />
                 </div>
@@ -1116,8 +1128,8 @@ export default function App() {
             </article>
 
             {/* Maintenance Request Card */}
-            <article class="oc-doc-card">
-              <div class="oc-card-band orange flex items-center gap-4 relative px-6 py-5" style={{ minHeight: '88px' }}>
+            <article className="oc-doc-card">
+              <div className="oc-card-band orange flex items-center gap-4 relative px-6 py-5" style={{ minHeight: '88px' }}>
                 <div className="bg-white/15 p-2 rounded-lg shrink-0">
                   <Wrench size={22} className="text-white stroke-[2.5]" />
                 </div>
@@ -1149,11 +1161,11 @@ export default function App() {
         </section>
 
         {/* Invoice Submissions and Incident Reports Bottom Grid */}
-        <div class="oc-bottom-grid">
+        <div className="oc-bottom-grid">
           {/* Financial & Invoice submissions */}
-          <section id="contacts" ref={sectionRefs.contacts} class="oc-panel">
-            <div class="oc-section-heading">
-              <span class="oc-icon" aria-hidden="true">
+          <section id="contacts" ref={sectionRefs.contacts} className="oc-panel">
+            <div className="oc-section-heading">
+              <span className="oc-icon" aria-hidden="true">
                 <FileCode size={20} className="text-emerald-700" />
               </span>
               <div>
@@ -1162,7 +1174,7 @@ export default function App() {
               </div>
             </div>
 
-            <aside class="oc-warning">
+            <aside className="oc-warning">
               <strong>
                 <AlertTriangle size={18} />
                 CRITICAL FINANCIAL SEPARATION RULE
@@ -1171,7 +1183,7 @@ export default function App() {
             </aside>
 
             <div className="oc-table-container">
-              <table class="oc-table">
+              <table className="oc-table">
                 <thead>
                   <tr>
                     <th>Document Category</th>
@@ -1181,7 +1193,7 @@ export default function App() {
                 </thead>
                 <tbody>
                   <tr>
-                    <td><span class="oc-badge paid">POS PAID OUTS</span></td>
+                    <td><span className="oc-badge paid">POS PAID OUTS</span></td>
                     <td className="oc-action-cell">Already Posted in the POS System. Send all supporting documentation.</td>
                     <td className="oc-bold-cell">
                       <button 
@@ -1195,7 +1207,7 @@ export default function App() {
                     </td>
                   </tr>
                   <tr>
-                    <td><span class="oc-badge invoice">AP INVOICES</span></td>
+                    <td><span className="oc-badge invoice">AP INVOICES</span></td>
                     <td className="oc-action-cell">Accounts Payable. Send all vendor invoices requiring payment.</td>
                     <td className="oc-bold-cell">
                       <button 
@@ -1214,9 +1226,9 @@ export default function App() {
           </section>
 
           {/* Incident Report Guidelines */}
-          <section id="incidents" ref={sectionRefs.incidents} class="oc-panel">
-            <div class="oc-section-heading">
-              <span class="oc-icon" aria-hidden="true">
+          <section id="incidents" ref={sectionRefs.incidents} className="oc-panel">
+            <div className="oc-section-heading">
+              <span className="oc-icon" aria-hidden="true">
                 <AlertCircle size={20} className="text-emerald-700" />
               </span>
               <div>
@@ -1226,7 +1238,7 @@ export default function App() {
             </div>
 
             <div className="oc-table-container mb-6">
-              <table class="oc-table compact">
+              <table className="oc-table compact">
                 <thead>
                   <tr>
                     <th>Incident Type</th>
@@ -1236,7 +1248,7 @@ export default function App() {
                 </thead>
                 <tbody>
                   <tr>
-                    <td><span class="oc-badge employee">EMPLOYEE INCIDENTS</span></td>
+                    <td><span className="oc-badge employee">EMPLOYEE INCIDENTS</span></td>
                     <td className="oc-action-cell"><b>Hani</b> (Select First Insurance)</td>
                     <td className="oc-bold-cell">
                       <button 
@@ -1250,7 +1262,7 @@ export default function App() {
                     </td>
                   </tr>
                   <tr>
-                    <td><span class="oc-badge guest">GUEST INCIDENTS</span></td>
+                    <td><span className="oc-badge guest">GUEST INCIDENTS</span></td>
                     <td className="oc-action-cell"><b>Jim Doran</b> (AJ Gallagher)</td>
                     <td className="oc-bold-cell">
                       <button 
@@ -1268,7 +1280,7 @@ export default function App() {
             </div>
 
             {/* CC List Card Block */}
-            <div class="oc-cc-box">
+            <div className="oc-cc-box">
               <h3>Always CC the Following on All Incident Reports</h3>
               <div className="oc-cc-buttons-container">
                 <button 
@@ -1339,7 +1351,7 @@ export default function App() {
         </div>
 
         {/* Footer */}
-        <footer class="oc-footer">
+        <footer className="oc-footer">
           <div>© 2026 Lumps Are Good</div>
           <div className="text-xs text-slate-400 font-normal">We ❤️ You &bull; But You've Reached The End</div>
         </footer>
