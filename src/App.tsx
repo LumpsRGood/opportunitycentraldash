@@ -34,6 +34,8 @@ import {
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 
+const APP_VERSION = 'v1.2.0';
+
 const DOCUMENTS = [
   {
     id: 'doc-sick-leave',
@@ -917,7 +919,12 @@ export default function App() {
         {/* Header Section */}
         <header className="oc-masthead">
           <div>
-            <h1>Opportunity Central</h1>
+            <h1 className="flex items-center gap-3">
+              Opportunity Central
+              <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-50 text-emerald-800 border border-emerald-200 uppercase tracking-wider scale-90 origin-left select-none">
+                {APP_VERSION}
+              </span>
+            </h1>
             <p>One Stop Portal &amp; Directory | Opportunity Pancakes (IHOP Franchisee)</p>
           </div>
           <div className="flex items-center gap-6 flex-wrap md:flex-nowrap">
@@ -1352,7 +1359,7 @@ export default function App() {
 
         {/* Footer */}
         <footer className="oc-footer">
-          <div>© 2026 Lumps Are Good</div>
+          <div>© 2026 Lumps Are Good &bull; Version {APP_VERSION}</div>
           <div className="text-xs text-slate-400 font-normal">We ❤️ You &bull; But You've Reached The End</div>
         </footer>
 
