@@ -44,7 +44,7 @@ const DOCUMENTS = [
     icon: FileText,
     bandClass: 'green',
     bandIcon: '▣',
-    link: 'https://opportunityrestaurantgroup.sharepoint.com/sites/OpportunityCentral/Shared%20Documents/Employee%20Sick%20Leave%202025-11-10%20at%2011-06-51%20AM.pdf?web=1'
+    link: 'https://opportunityrestaurantgroup.sharepoint.com/:b:/s/OpportunityCentral/IQArgHfe_0kXRILc8hn8_VnuAWyBPk1IzwyiVtBXmu2fgCM?e=o8gcKq'
   },
   {
     id: 'doc-termination',
@@ -55,7 +55,7 @@ const DOCUMENTS = [
     icon: UserMinus,
     bandClass: 'red',
     bandIcon: '♙',
-    link: 'https://opportunityrestaurantgroup.sharepoint.com/sites/OpportunityCentral/Shared%20Documents/Employee%20Termination%20Form.docx?web=1'
+    link: 'https://opportunityrestaurantgroup.sharepoint.com/:w:/s/OpportunityCentral/IQDsQ6E9tBFJSbNQezPQzt_HAayb_uGH2v8Q8Ks6Fob4ckg?e=grp7zf'
   },
   {
     id: 'doc-warning',
@@ -66,7 +66,7 @@ const DOCUMENTS = [
     icon: AlertTriangle,
     bandClass: 'orange',
     bandIcon: '✎',
-    link: 'https://opportunityrestaurantgroup.sharepoint.com/sites/OpportunityCentral/Shared%20Documents/EMPLOYEE%20WARNING.docx?web=1'
+    link: 'https://opportunityrestaurantgroup.sharepoint.com/:w:/s/OpportunityCentral/IQD1uBKeWWLpSoVXSxLaUkrmAZwvLw9qu7htUDP4GceYiFo?e=f9vAf8'
   },
   {
     id: 'doc-food-critical',
@@ -77,7 +77,7 @@ const DOCUMENTS = [
     icon: ShieldCheck,
     bandClass: 'forest',
     bandIcon: '☑',
-    link: 'https://opportunityrestaurantgroup.sharepoint.com/sites/OpportunityCentral/Shared%20Documents/FOOD%20CRITICAL%20CHECK%20UP%20LIST%20UPDATED.docx?web=1'
+    link: 'https://opportunityrestaurantgroup.sharepoint.com/:w:/s/OpportunityCentral/IQD77cKoCMXLRLw7xAwXaM1UAbhkZwp7Kr68OIBlBrG4Xa0?e=sRd0Jl'
   },
   {
     id: 'doc-incident',
@@ -88,7 +88,7 @@ const DOCUMENTS = [
     icon: ClipboardSignature,
     bandClass: 'purple',
     bandIcon: '♢',
-    link: 'https://opportunityrestaurantgroup.sharepoint.com/sites/OpportunityCentral/Shared%20Documents/Opportunity%20Pancakes%20Incident%20Report.docx?web=1'
+    link: 'https://opportunityrestaurantgroup.sharepoint.com/:w:/s/OpportunityCentral/IQDqJyZyVRBOQKepaccExzkwATAqfOGb6M0WW8nsyZ2PhEE?e=tExHai'
   },
   {
     id: 'doc-temp-log',
@@ -99,7 +99,7 @@ const DOCUMENTS = [
     icon: Thermometer,
     bandClass: 'blue',
     bandIcon: '♨',
-    link: 'https://opportunityrestaurantgroup.sharepoint.com/sites/OpportunityCentral/Shared%20Documents/2026%20Core%201%20Expanded%20Temperature%20Log.pdf?web=1'
+    link: 'https://opportunityrestaurantgroup.sharepoint.com/:b:/s/OpportunityCentral/IQATIKGa1RDMTq-RPW5jGZh8AdLTcig0wDunFuIYXiXk7yc?e=TA0iyN'
   },
   {
     id: 'doc-ga-haccp',
