@@ -30,7 +30,9 @@ import {
   Users,
   Wrench,
   Monitor,
-  BookOpen
+  BookOpen,
+  Bell,
+  Settings
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 
@@ -191,7 +193,7 @@ export default function App() {
         while elevating them with modern visual styles (smooth hover lifts, focus highlights, elegant transitions).
       */}
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
 
         .navbar,
         footer.footer {
@@ -201,21 +203,22 @@ export default function App() {
         body {
           background: #f4f6f8 !important;
           margin: 0;
-          font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+          font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif !important;
         }
 
         .oc-portal {
-          --oc-green: #2b6129;
-          --oc-green-dark: #1e451c;
-          --oc-green-light: #e1f1de;
-          --oc-green-border: #c3e2bd;
-          --oc-text: #1e293b;
+          --oc-green: #15803d;
+          --oc-green-dark: #166534;
+          --oc-green-light: #f0fdf4;
+          --oc-green-border: #bbf7d0;
+          --oc-text: #0f172a;
           --oc-muted: #64748b;
           --oc-line: #e2e8f0;
           --oc-panel: #ffffff;
           color: var(--oc-text);
           background: #f4f6f8;
           min-height: 100vh;
+          font-family: 'Inter', sans-serif;
         }
 
         .oc-portal * {
@@ -226,61 +229,61 @@ export default function App() {
           display: flex;
           align-items: center;
           justify-content: space-between;
-          gap: 28px;
           background: #ffffff;
           border-bottom: 1px solid var(--oc-line);
-          padding: 24px 40px;
+          padding: 20px 40px;
+          flex-wrap: wrap;
+          gap: 20px;
         }
 
-        .oc-masthead h1 {
+        .oc-masthead-left h1 {
           margin: 0;
-          color: var(--oc-green);
-          font-size: 36px;
-          line-height: 1.1;
-          font-weight: 800;
-          letter-spacing: -0.03em;
-        }
-
-        .oc-masthead p {
-          margin: 8px 0 0;
-          color: var(--oc-muted);
-          font-size: 16px;
-          font-weight: 500;
-        }
-
-        .oc-brand-lockup {
-          display: flex;
-          align-items: center;
-          gap: 14px;
-          color: var(--oc-green);
-          font-size: 16px;
-          font-weight: 800;
-          letter-spacing: 5px;
+          color: var(--oc-text);
+          font-size: 26px;
           line-height: 1.2;
-          text-align: left;
-          white-space: nowrap;
-        }
-
-        .oc-brand-lockup small {
-          color: #7c3aed;
-          font-size: 10px;
-          letter-spacing: 7px;
-          font-weight: 700;
-        }
-
-        .oc-pancake-mark {
-          display: grid;
-          place-items: center;
-          width: 46px;
-          height: 46px;
-          border: 3px solid #efb56d;
-          border-radius: 50%;
-          color: var(--oc-green);
-          font-size: 14px;
           font-weight: 800;
-          letter-spacing: 0;
-          background: #fffbef;
-          box-shadow: 0 4px 10px rgba(239, 181, 109, 0.15);
+          letter-spacing: -0.02em;
+        }
+
+        .oc-masthead-left p {
+          margin: 6px 0 0;
+          color: var(--oc-muted);
+          font-size: 13px;
+          font-weight: 400;
+        }
+
+        .oc-search-wrapper {
+          position: relative;
+          flex-grow: 1;
+          max-width: 380px;
+          margin-right: 20px;
+        }
+
+        .oc-search-input {
+          width: 100%;
+          height: 40px;
+          padding: 0 16px 0 42px;
+          background: #ffffff;
+          border: 1px solid var(--oc-line);
+          border-radius: 8px;
+          font-size: 14px;
+          font-weight: 500;
+          color: var(--oc-text);
+          outline: none;
+          transition: all 0.2s ease;
+        }
+
+        .oc-search-input:focus {
+          border-color: #0f172a;
+          box-shadow: 0 0 0 3px rgba(15, 23, 42, 0.08);
+        }
+
+        .oc-search-icon {
+          position: absolute;
+          left: 14px;
+          top: 11px;
+          color: var(--oc-muted);
+          pointer-events: none;
         }
 
         .oc-tabs-container {
@@ -289,42 +292,42 @@ export default function App() {
           z-index: 50;
           background: #ffffff;
           border-bottom: 1px solid var(--oc-line);
-          box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02);
+          box-shadow: 0 1px 2px rgba(0, 0, 0, 0.02);
         }
 
         .oc-tabs {
           display: flex;
           align-items: center;
-          gap: 32px;
+          gap: 24px;
           max-width: 1400px;
           margin: 0 auto;
-          min-height: 64px;
+          min-height: 48px;
           padding: 0 40px;
         }
 
         .oc-tabs button {
           display: flex;
           align-items: center;
-          height: 64px;
+          height: 48px;
           padding: 0 4px;
           border: none;
-          border-bottom: 3px solid transparent;
+          border-bottom: 2px solid transparent;
           background: transparent;
           color: #475569;
-          font-size: 15px;
-          font-weight: 700;
-          text-decoration: none;
+          font-size: 14px;
+          font-weight: 500;
           cursor: pointer;
-          transition: all 0.25s ease;
+          transition: all 0.2s ease;
         }
 
         .oc-tabs button.active {
-          color: var(--oc-green);
-          border-bottom-color: var(--oc-green);
+          color: #0f172a;
+          border-bottom-color: #0f172a;
+          font-weight: 600;
         }
 
         .oc-tabs button:hover {
-          color: var(--oc-green);
+          color: #0f172a;
         }
 
         .oc-welcome {
@@ -357,7 +360,7 @@ export default function App() {
         .oc-section-heading h2 {
           margin: 0;
           color: var(--oc-text);
-          font-size: 24px;
+          font-size: 22px;
           line-height: 1.2;
           font-weight: 800;
           letter-spacing: -0.02em;
@@ -366,110 +369,49 @@ export default function App() {
         .oc-section-heading p {
           margin: 6px 0 0;
           color: var(--oc-muted);
-          font-size: 15px;
+          font-size: 14px;
           line-height: 1.5;
-          font-weight: 500;
+          font-weight: 400;
         }
 
         .oc-panel {
           width: min(1400px, calc(100% - 80px));
           margin: 0 auto 32px;
-          padding: 36px;
+          padding: 32px;
           background: var(--oc-panel);
           border: 1px solid var(--oc-line);
-          border-radius: 16px;
-          box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.04), 0 1px 3px rgba(0, 0, 0, 0.02);
-          border-left: 5px solid var(--oc-line);
+          border-radius: 12px;
+          box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
           transition: all 0.25s ease;
-        }
-
-        #documents {
-          background: #ffffff;
-          border-left-color: #10b981; /* Operational green highlight */
-        }
-
-        #facilities {
-          background: #fbfbfe; /* Extremely soft purple/indigo tint */
-          border-color: #cbd5e1;
-          border-left-color: #8b5cf6; /* Facilities purple highlight */
-        }
-
-        #contacts {
-          background: #f8fafc; /* Cool slate/blue background for financial submissions */
-          border-color: #cbd5e1;
-          border-left-color: #3b82f6; /* Financial blue highlight */
-        }
-
-        #incidents {
-          background: #fafaf9; /* Warm stone/ivory background for safety guidelines */
-          border-color: #e4e4e7;
-          border-left-color: #f43f5e; /* Safety rose-red highlight */
         }
 
         .oc-section-heading {
           display: flex;
           align-items: flex-start;
           gap: 16px;
-          margin-bottom: 30px;
+          margin-bottom: 24px;
         }
 
         .oc-icon {
           display: flex;
           align-items: center;
           justify-content: center;
-          width: 44px;
-          height: 44px;
-          border-radius: 10px;
+          width: 40px;
+          height: 40px;
+          border-radius: 8px;
           background: #f1f5f9;
           color: var(--oc-green);
-          font-size: 20px;
+          font-size: 18px;
           flex-shrink: 0;
         }
 
-        /* Interactive Search & Filter bar styled beautifully */
         .oc-search-filter-bar {
           display: flex;
           align-items: center;
-          justify-content: space-between;
-          flex-wrap: wrap;
-          gap: 16px;
-          margin-bottom: 28px;
-          padding-bottom: 20px;
-          border-bottom: 1px dashed var(--oc-line);
-        }
-
-        .oc-search-wrapper {
-          position: relative;
-          flex: 1;
-          min-width: 280px;
-          max-width: 480px;
-        }
-
-        .oc-search-input {
-          width: 100%;
-          height: 44px;
-          padding: 0 16px 0 44px;
-          background: #f8fafc;
-          border: 1px solid var(--oc-line);
-          border-radius: 10px;
-          font-size: 14px;
-          font-weight: 500;
-          color: var(--oc-text);
-          outline: none;
-          transition: all 0.2s ease;
-        }
-
-        .oc-search-input:focus {
-          border-color: var(--oc-green);
-          background: #ffffff;
-          box-shadow: 0 0 0 3px rgba(43, 97, 41, 0.1);
-        }
-
-        .oc-search-icon {
-          position: absolute;
-          left: 14px;
-          top: 13px;
-          color: var(--oc-muted);
+          justify-content: flex-start;
+          margin-bottom: 24px;
+          padding-bottom: 16px;
+          border-bottom: 1px solid var(--oc-line);
         }
 
         .oc-category-tabs {
@@ -477,30 +419,31 @@ export default function App() {
           align-items: center;
           gap: 8px;
           overflow-x: auto;
-          padding-bottom: 4px;
         }
 
         .oc-category-btn {
-          padding: 8px 16px;
-          background: #f1f5f9;
-          border: none;
-          border-radius: 8px;
+          padding: 6px 14px;
+          background: #ffffff;
+          border: 1px solid #e2e8f0;
+          border-radius: 9999px;
           color: #475569;
           font-size: 13px;
-          font-weight: 700;
+          font-weight: 500;
           cursor: pointer;
           white-space: nowrap;
           transition: all 0.2s ease;
         }
 
         .oc-category-btn:hover {
-          background: #e2e8f0;
-          color: var(--oc-text);
+          background: #f1f5f9;
+          border-color: #cbd5e1;
         }
 
         .oc-category-btn.active {
-          background: var(--oc-green);
+          background: #0f172a;
           color: #ffffff;
+          border-color: #0f172a;
+          font-weight: 600;
         }
 
         .oc-card-grid {
@@ -509,96 +452,127 @@ export default function App() {
           gap: 24px;
         }
 
+        /* Modern Left-Border Document Cards */
         .oc-doc-card {
           display: flex;
           flex-direction: column;
-          min-height: 220px;
-          overflow: hidden;
-          border: 1px solid var(--oc-line);
-          border-radius: 14px;
           background: #ffffff;
-          transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+          border: 1px solid #e2e8f0;
+          border-radius: 12px;
+          box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+          transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
           position: relative;
+          padding: 24px;
+          border-left: 4px solid #cbd5e1;
+          overflow: hidden;
         }
 
+        .oc-doc-card.card-green { border-left-color: #22c55e; }
+        .oc-doc-card.card-red { border-left-color: #ef4444; }
+        .oc-doc-card.card-orange { border-left-color: #f97316; }
+        .oc-doc-card.card-forest { border-left-color: #15803d; }
+        .oc-doc-card.card-purple { border-left-color: #a855f7; }
+        .oc-doc-card.card-blue { border-left-color: #3b82f6; }
+
         .oc-doc-card:hover {
-          transform: translateY(-5px);
-          box-shadow: 0 15px 30px -10px rgba(0, 0, 0, 0.08), 0 1px 3px rgba(0, 0, 0, 0.01);
+          transform: translateY(-4px);
+          box-shadow: 0 12px 20px -8px rgba(0, 0, 0, 0.08);
           border-color: #cbd5e1;
         }
 
-        .oc-card-band {
+        .oc-card-header-row {
           display: flex;
           align-items: center;
           justify-content: space-between;
-          padding: 16px 24px;
-          color: #ffffff;
-          font-size: 24px;
-          font-weight: 700;
+          gap: 12px;
+          margin-bottom: 14px;
+          width: 100%;
         }
 
-        .oc-card-band.green { background: linear-gradient(135deg, #16a34a, #22c55e); }
-        .oc-card-band.red { background: linear-gradient(135deg, #dc2626, #f87171); }
-        .oc-card-band.orange { background: linear-gradient(135deg, #ea580c, #ff9738); }
-        .oc-card-band.forest { background: linear-gradient(135deg, #15803d, #4ade80); }
-        .oc-card-band.purple { background: linear-gradient(135deg, #6b21a8, #a855f7); }
-        .oc-card-band.blue { background: linear-gradient(135deg, #0284c7, #38bdf8); }
-
-        .oc-card-badge {
-          font-size: 11px;
-          font-weight: 800;
-          letter-spacing: 0.05em;
-          background: rgba(255, 255, 255, 0.2);
-          padding: 4px 10px;
-          border-radius: 6px;
-          text-transform: uppercase;
-        }
-
-        .oc-doc-card h3 {
-          margin: 20px 24px 0;
-          font-size: 19px;
-          font-weight: 800;
-          line-height: 1.3;
-          color: var(--oc-text);
-          letter-spacing: -0.01em;
-        }
-
-        .oc-card-band h3 {
-          color: #ffffff !important;
-          margin: 0 !important;
-        }
-
-        .oc-doc-card p {
-          margin: 10px 24px 20px;
-          color: var(--oc-muted);
-          font-size: 14px;
-          line-height: 1.5;
-          flex-grow: 1;
-        }
-
-        .oc-download {
+        .oc-card-icon-wrapper {
           display: flex;
           align-items: center;
           justify-content: center;
-          gap: 10px;
-          min-height: 48px;
-          margin: auto 24px 24px;
-          padding: 0 16px;
-          border-radius: 10px;
-          background: var(--oc-green);
+          width: 40px;
+          height: 40px;
+          border-radius: 8px;
+          flex-shrink: 0;
+        }
+
+        .oc-card-icon-wrapper.green { background-color: #f0fdf4; color: #22c55e; }
+        .oc-card-icon-wrapper.red { background-color: #fef2f2; color: #ef4444; }
+        .oc-card-icon-wrapper.orange { background-color: #fff7ed; color: #f97316; }
+        .oc-card-icon-wrapper.forest { background-color: #f0fdf4; color: #15803d; }
+        .oc-card-icon-wrapper.purple { background-color: #f5f3ff; color: #a855f7; }
+        .oc-card-icon-wrapper.blue { background-color: #f0f9ff; color: #3b82f6; }
+
+        .oc-card-title-container {
+          flex: 1;
+          min-width: 0;
+        }
+
+        .oc-card-title-container h3 {
+          margin: 0;
+          font-size: 16px;
+          font-weight: 700;
+          color: var(--oc-text);
+          line-height: 1.3;
+        }
+
+        .oc-card-format-badge {
+          font-size: 10px;
+          font-weight: 700;
+          padding: 2px 6px;
+          border-radius: 4px;
+          background-color: #f1f5f9;
+          color: #475569;
+          text-transform: uppercase;
+          border: 1px solid #e2e8f0;
+          letter-spacing: 0.05em;
+        }
+
+        .oc-doc-card p.oc-card-description {
+          margin: 0 0 20px 0;
+          font-size: 14px;
+          line-height: 1.5;
+          color: #64748b;
+          flex-grow: 1;
+        }
+
+        .oc-open-button {
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          gap: 8px;
+          width: 100%;
+          height: 40px;
+          border-radius: 8px;
+          background-color: #15803d;
           color: #ffffff !important;
           font-size: 14px;
-          font-weight: 700;
+          font-weight: 600;
           text-decoration: none;
           transition: all 0.2s ease;
-          border: 1px solid transparent;
+          border: none;
+          cursor: pointer;
         }
 
-        .oc-download:hover {
-          background: var(--oc-green-dark);
-          box-shadow: 0 4px 12px rgba(30, 69, 28, 0.15);
+        .oc-open-button:hover {
+          background-color: #166534;
+          box-shadow: 0 4px 10px rgba(22, 101, 52, 0.15);
         }
 
+        .oc-open-button.coming-soon {
+          background-color: #64748b;
+          color: #f1f5f9 !important;
+          cursor: not-allowed;
+          pointer-events: none;
+          font-size: 12px;
+          text-transform: uppercase;
+          letter-spacing: 0.05em;
+        }
+
+        /* Bottom Grid and Guidelines */
         .oc-bottom-grid {
           display: grid;
           grid-template-columns: 1fr 1fr;
@@ -614,37 +588,35 @@ export default function App() {
 
         .oc-warning {
           margin: 0 0 24px;
-          padding: 20px 24px;
-          border-left: 5px solid #f97316;
-          border-radius: 10px;
+          padding: 16px 20px;
+          border-left: 4px solid #f97316;
+          border-radius: 8px;
           background: #fff7ed;
-          border-top: 1px solid #ffedd5;
-          border-right: 1px solid #ffedd5;
-          border-bottom: 1px solid #ffedd5;
+          border: 1px solid #ffedd5;
+          border-left-width: 4px;
         }
 
         .oc-warning strong {
           display: flex;
           align-items: center;
           gap: 8px;
-          margin-bottom: 8px;
+          margin-bottom: 6px;
           color: #ea580c;
-          font-size: 15px;
-          letter-spacing: .5px;
-          font-weight: 800;
+          font-size: 14px;
+          font-weight: 700;
+          letter-spacing: 0.02em;
         }
 
         .oc-warning p {
           margin: 0;
-          font-size: 14px;
+          font-size: 13px;
           line-height: 1.5;
           color: #7c2d12;
-          font-weight: 500;
         }
 
         .oc-table-container {
           overflow-x: auto;
-          border-radius: 12px;
+          border-radius: 8px;
           border: 1px solid var(--oc-line);
           background: #ffffff;
         }
@@ -653,12 +625,12 @@ export default function App() {
           width: 100%;
           border-collapse: separate;
           border-spacing: 0;
-          font-size: 14px;
+          font-size: 13px;
         }
 
         .oc-table th,
         .oc-table td {
-          padding: 18px 20px;
+          padding: 14px 16px;
           border-bottom: 1px solid var(--oc-line);
           text-align: left;
           vertical-align: middle;
@@ -667,9 +639,9 @@ export default function App() {
         .oc-table th {
           background: #f8fafc;
           color: #475569;
-          font-size: 13px;
-          font-weight: 800;
-          letter-spacing: 0.02em;
+          font-size: 11px;
+          font-weight: 700;
+          letter-spacing: 0.03em;
           text-transform: uppercase;
         }
 
@@ -678,19 +650,19 @@ export default function App() {
         }
 
         .oc-table td.oc-bold-cell {
-          font-weight: 700;
+          font-weight: 600;
           color: var(--oc-text);
         }
 
         .oc-table td.oc-action-cell {
           color: #475569;
-          font-weight: 500;
+          font-weight: 400;
           line-height: 1.4;
         }
 
         .oc-table a {
           color: #2563eb;
-          font-weight: 700;
+          font-weight: 600;
           text-decoration: none;
           display: inline-flex;
           align-items: center;
@@ -707,89 +679,141 @@ export default function App() {
           display: inline-flex;
           align-items: center;
           justify-content: center;
-          padding: 6px 12px;
-          border-radius: 6px;
-          font-size: 12px;
-          font-weight: 800;
+          padding: 4px 8px;
+          border-radius: 4px;
+          font-size: 11px;
+          font-weight: 700;
           line-height: 1.2;
           letter-spacing: 0.02em;
-          text-align: center;
         }
 
         .oc-badge.paid { background: #dcfce7; color: #166534; border: 1px solid #bbf7d0; }
         .oc-badge.invoice { background: #dbeafe; color: #1e40af; border: 1px solid #bfdbfe; }
-        .oc-badge.employee { background: #ffedd5; color: #9a3412; border: 1px solid #fed7aa; }
-        .oc-badge.guest { background: #fef9c3; color: #854d0e; border: 1px solid #fef08a; }
 
-        .oc-cc-box {
-          margin-top: 24px;
-          padding: 24px;
-          border: 1px solid var(--oc-line);
-          border-radius: 12px;
-          background: #f8fafc;
-        }
-
-        .oc-cc-box h3 {
-          margin: 0 0 16px;
-          padding-bottom: 12px;
-          border-bottom: 1px solid var(--oc-line);
-          font-size: 15px;
-          font-weight: 800;
-          color: var(--oc-text);
-          text-transform: uppercase;
-          letter-spacing: 0.03em;
-        }
-
-        .oc-cc-buttons-container {
-          display: flex;
-          flex-direction: column;
-          gap: 10px;
-        }
-
-        .oc-cc-box button {
+        /* Contact Cards Directory */
+        .oc-contact-card {
           display: flex;
           align-items: center;
           justify-content: space-between;
-          width: 100%;
-          min-height: 52px;
-          margin: 0;
-          padding: 0 18px;
-          border: 1px solid var(--oc-line);
+          padding: 14px 16px;
+          border: 1px solid #e2e8f0;
           border-radius: 8px;
-          background: #ffffff;
-          color: #334155;
-          font-family: 'JetBrains Mono', Consolas, "Courier New", monospace;
-          font-size: 14px;
-          font-weight: 600;
-          text-align: left;
-          position: relative;
-          cursor: pointer;
-          transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+          background-color: #ffffff;
+          transition: all 0.2s ease;
         }
 
-        .oc-cc-box button:hover {
-          border-color: var(--oc-green);
-          background: #f0fdf4;
-          color: var(--oc-green-dark);
-          box-shadow: 0 2px 8px rgba(43, 97, 41, 0.05);
+        .oc-contact-card:hover {
+          border-color: #cbd5e1;
+          box-shadow: 0 2px 8px rgba(0,0,0,0.02);
         }
 
-        .oc-cc-box button:active {
-          transform: scale(0.99);
-        }
-
-        .oc-copy-indicator {
+        .oc-contact-left {
           display: flex;
           align-items: center;
-          gap: 6px;
-          font-size: 12px;
-          font-weight: 700;
-          color: var(--oc-muted);
-          font-family: 'Plus Jakarta Sans', sans-serif;
+          gap: 16px;
         }
 
-        .oc-copy-indicator.copied {
-          color: var(--oc-green);
+        .oc-contact-badge {
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 10px;
+          font-weight: 800;
+          padding: 3px 8px;
+          border-radius: 5px;
+          letter-spacing: 0.05em;
+          text-transform: uppercase;
+          min-width: 84px;
+          text-align: center;
+        }
+
+        .oc-contact-badge.employee {
+          background-color: #fff7ed;
+          color: #ea580c;
+          border: 1px solid #ffedd5;
+        }
+
+        .oc-contact-badge.guest {
+          background-color: #f0f9ff;
+          color: #0284c7;
+          border: 1px solid #e0f2fe;
+        }
+
+        .oc-contact-info h4 {
+          margin: 0;
+          font-size: 14px;
+          font-weight: 700;
+          color: #0f172a;
+        }
+
+        .oc-contact-info p {
+          margin: 2px 0 0;
+          font-size: 12px;
+          color: #64748b;
+        }
+
+        .oc-contact-email-btn {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          padding: 6px 12px;
+          background-color: #f8fafc;
+          border: 1px solid #e2e8f0;
+          border-radius: 6px;
+          color: #2563eb;
+          font-size: 12px;
+          font-weight: 600;
+          cursor: pointer;
+          transition: all 0.2s ease;
+        }
+
+        .oc-contact-email-btn:hover {
+          background-color: #f0f9ff;
+          border-color: #bfdbfe;
+          color: #1d4ed8;
+        }
+
+        /* Sleek CC Container */
+        .oc-cc-container {
+          background-color: #ffffff;
+          border: 1px solid #e2e8f0;
+          border-radius: 8px;
+          padding: 16px;
+        }
+
+        .oc-cc-title {
+          font-size: 11px;
+          font-weight: 700;
+          color: #475569;
+          letter-spacing: 0.05em;
+          text-transform: uppercase;
+          margin-bottom: 12px;
+        }
+
+        .oc-cc-list {
+          display: flex;
+          flex-direction: column;
+          gap: 6px;
+        }
+
+        .oc-cc-item {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          padding: 8px 12px;
+          border-radius: 6px;
+          background-color: #f8fafc;
+          border: 1px solid #e2e8f0;
+          font-family: 'JetBrains Mono', monospace;
+          font-size: 12px;
+          color: #334155;
+          cursor: pointer;
+          transition: all 0.2s ease;
+        }
+
+        .oc-cc-item:hover {
+          background-color: #f1f5f9;
+          border-color: #cbd5e1;
         }
 
         .oc-footer {
@@ -823,22 +847,16 @@ export default function App() {
           text-align: center;
         }
 
-        .oc-empty-icon {
-          font-size: 36px;
-          color: var(--oc-muted);
-          margin-bottom: 12px;
-        }
-
         .oc-empty-state h4 {
           margin: 0;
-          font-size: 16px;
+          font-size: 15px;
           font-weight: 700;
           color: var(--oc-text);
         }
 
         .oc-empty-state p {
           margin: 4px 0 0;
-          font-size: 14px;
+          font-size: 13px;
           color: var(--oc-muted);
         }
 
@@ -847,18 +865,18 @@ export default function App() {
           position: fixed;
           bottom: 24px;
           right: 24px;
-          background: #1e293b;
+          background: #0f172a;
           color: #ffffff;
-          padding: 12px 20px;
+          padding: 10px 18px;
           border-radius: 8px;
-          font-size: 14px;
+          font-size: 13px;
           font-weight: 600;
-          box-shadow: 0 10px 25px -5px rgba(0,0,0,0.3);
+          box-shadow: 0 10px 25px -5px rgba(0,0,0,0.2);
           z-index: 100;
           display: flex;
           align-items: center;
           gap: 8px;
-          border: 1px solid #334155;
+          border: 1px solid #1e293b;
         }
 
         @media (max-width: 1200px) {
@@ -869,35 +887,32 @@ export default function App() {
 
         @media (max-width: 768px) {
           .oc-masthead {
-            flex-direction: column;
-            align-items: flex-start;
-            gap: 16px;
-            padding: 24px;
+            padding: 20px;
           }
 
-          .oc-masthead h1 {
-            font-size: 28px;
+          .oc-masthead-left h1 {
+            font-size: 22px;
           }
 
           .oc-tabs {
             gap: 16px;
-            padding: 0 24px;
+            padding: 0 20px;
             overflow-x: auto;
             white-space: nowrap;
           }
 
           .oc-tabs button {
-            font-size: 14px;
+            font-size: 13px;
           }
 
           .oc-welcome,
           .oc-panel,
           .oc-bottom-grid {
-            width: calc(100% - 48px);
+            width: calc(100% - 40px);
           }
 
           .oc-panel {
-            padding: 24px;
+            padding: 20px;
           }
 
           .oc-card-grid {
@@ -910,7 +925,9 @@ export default function App() {
           }
 
           .oc-search-wrapper {
-            max-width: none;
+            max-width: 100%;
+            margin-right: 0;
+            margin-bottom: 12px;
           }
         }
       `}</style>
@@ -918,10 +935,10 @@ export default function App() {
       <main id="mainContent" className="oc-portal">
         {/* Header Section */}
         <header className="oc-masthead">
-          <div>
+          <div className="oc-masthead-left">
             <h1 className="flex items-center gap-3">
               Opportunity Central
-              <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-50 text-emerald-800 border border-emerald-200 uppercase tracking-wider scale-90 origin-left select-none">
+              <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-slate-100 text-slate-800 border border-slate-200 uppercase tracking-wider scale-90 origin-left select-none">
                 {APP_VERSION}
               </span>
             </h1>
@@ -959,38 +976,33 @@ export default function App() {
         <div className="oc-tabs-container">
           <nav className="oc-tabs" aria-label="Opportunity Central sections">
             <button 
-              className={`flex items-center gap-2 ${activeTab === 'home' ? 'active' : ''}`} 
+              className={activeTab === 'home' ? 'active' : ''} 
               onClick={() => handleTabClick('home')}
             >
-              <Home size={18} />
               Home
             </button>
             <button 
-              className={`flex items-center gap-2 ${activeTab === 'documents' ? 'active' : ''}`} 
+              className={activeTab === 'documents' ? 'active' : ''} 
               onClick={() => handleTabClick('documents')}
             >
-              <FileText size={18} />
               Documents
             </button>
             <button 
-              className={`flex items-center gap-2 ${activeTab === 'facilities' ? 'active' : ''}`} 
+              className={activeTab === 'facilities' ? 'active' : ''} 
               onClick={() => handleTabClick('facilities')}
             >
-              <Wrench size={18} />
               Facilities
             </button>
             <button 
-              className={`flex items-center gap-2 ${activeTab === 'contacts' ? 'active' : ''}`} 
+              className={activeTab === 'contacts' ? 'active' : ''} 
               onClick={() => handleTabClick('contacts')}
             >
-              <Users size={18} />
               Who to Contact
             </button>
             <button 
-              className={`flex items-center gap-2 ${activeTab === 'incidents' ? 'active' : ''}`} 
+              className={activeTab === 'incidents' ? 'active' : ''} 
               onClick={() => handleTabClick('incidents')}
             >
-              <AlertTriangle size={18} />
               Incident Guidelines
             </button>
           </nav>
@@ -1054,24 +1066,24 @@ export default function App() {
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, scale: 0.95 }}
                       transition={{ duration: 0.25, delay: idx * 0.03 }}
-                      className="oc-doc-card"
+                      className={`oc-doc-card card-${doc.bandClass}`}
                     >
-                      <div className={`oc-card-band ${doc.bandClass} flex items-center gap-4 relative px-6 py-5`} style={{ minHeight: '88px' }}>
-                        <div className="bg-white/15 p-2 rounded-lg shrink-0">
-                          <IconComponent size={22} className="text-white stroke-[2.5]" />
+                      <div className="oc-card-header-row">
+                        <div className={`oc-card-icon-wrapper ${doc.bandClass}`}>
+                          <IconComponent size={20} className="stroke-[2.5]" />
                         </div>
-                        <div className="flex-1 min-w-0 pr-8">
-                          <h3 className="text-base font-extrabold text-white leading-snug m-0">{doc.title}</h3>
-                        </div>
-                        <span className="oc-card-badge absolute top-3 right-3">{doc.format}</span>
+                        <span className="oc-card-format-badge">{doc.format}</span>
                       </div>
-                      <p className="mx-6 mt-4 mb-5 text-sm text-slate-500 leading-relaxed flex-grow">{doc.description}</p>
+                      <div className="oc-card-title-container mb-2">
+                        <h3>{doc.title}</h3>
+                      </div>
+                      <p className="oc-card-description">{doc.description}</p>
                       
                       <a 
-                        className="oc-download" 
+                        className="oc-open-button" 
                         href={doc.link} 
                         target="_blank" 
-                        rel="noopener"
+                        rel="noopener noreferrer"
                       >
                         <ExternalLink size={15} />
                         Open Form
@@ -1104,62 +1116,40 @@ export default function App() {
 
           <div className="oc-card-grid">
             {/* IT Request Card */}
-            <article className="oc-doc-card">
-              <div className="oc-card-band purple flex items-center gap-4 relative px-6 py-5" style={{ minHeight: '88px' }}>
-                <div className="bg-white/15 p-2 rounded-lg shrink-0">
-                  <Monitor size={22} className="text-white stroke-[2.5]" />
+            <article className="oc-doc-card card-purple">
+              <div className="oc-card-header-row">
+                <div className="oc-card-icon-wrapper purple">
+                  <Monitor size={20} className="stroke-[2.5]" />
                 </div>
-                <div className="flex-1 min-w-0 pr-8">
-                  <h3 className="text-base font-extrabold text-white leading-snug m-0">IT Request</h3>
-                </div>
-                <span className="oc-card-badge absolute top-3 right-3">SYSTEM</span>
+                <span className="oc-card-format-badge">SYSTEM</span>
               </div>
-              <p className="mx-6 mt-4 mb-5 text-sm text-slate-500 leading-relaxed flex-grow">
+              <div className="oc-card-title-container mb-2">
+                <h3>IT Request</h3>
+              </div>
+              <p className="oc-card-description">
                 Submit a ticket for POS terminals, printers, network, back office PCs, and connectivity issues.
               </p>
-              <div 
-                className="oc-download select-none font-extrabold tracking-wider text-xs uppercase flex items-center justify-center gap-2"
-                style={{ 
-                  background: 'linear-gradient(135deg, #0f172a 0%, #1e293b 100%)', 
-                  border: '1px solid #334155', 
-                  color: '#fbbf24', 
-                  pointerEvents: 'none', 
-                  cursor: 'not-allowed',
-                  boxShadow: '0 4px 12px rgba(15, 23, 42, 0.15)',
-                  letterSpacing: '0.1em'
-                }}
-              >
+              <div className="oc-open-button coming-soon">
                 <Sparkles size={14} className="text-amber-400 animate-pulse" />
                 Coming Soon
               </div>
             </article>
 
             {/* Maintenance Request Card */}
-            <article className="oc-doc-card">
-              <div className="oc-card-band orange flex items-center gap-4 relative px-6 py-5" style={{ minHeight: '88px' }}>
-                <div className="bg-white/15 p-2 rounded-lg shrink-0">
-                  <Wrench size={22} className="text-white stroke-[2.5]" />
+            <article className="oc-doc-card card-orange">
+              <div className="oc-card-header-row">
+                <div className="oc-card-icon-wrapper orange">
+                  <Wrench size={20} className="stroke-[2.5]" />
                 </div>
-                <div className="flex-1 min-w-0 pr-8">
-                  <h3 className="text-base font-extrabold text-white leading-snug m-0">Maintenance Request</h3>
-                </div>
-                <span className="oc-card-badge absolute top-3 right-3">SYSTEM</span>
+                <span className="oc-card-format-badge">SYSTEM</span>
               </div>
-              <p className="mx-6 mt-4 mb-5 text-sm text-slate-500 leading-relaxed flex-grow">
+              <div className="oc-card-title-container mb-2">
+                <h3>Maintenance Request</h3>
+              </div>
+              <p className="oc-card-description">
                 Report issues with HVAC, plumbing, lighting, refrigeration, kitchen equipment, and structural repairs.
               </p>
-              <div 
-                className="oc-download select-none font-extrabold tracking-wider text-xs uppercase flex items-center justify-center gap-2"
-                style={{ 
-                  background: 'linear-gradient(135deg, #0f172a 0%, #1e293b 100%)', 
-                  border: '1px solid #334155', 
-                  color: '#fbbf24', 
-                  pointerEvents: 'none', 
-                  cursor: 'not-allowed',
-                  boxShadow: '0 4px 12px rgba(15, 23, 42, 0.15)',
-                  letterSpacing: '0.1em'
-                }}
-              >
+              <div className="oc-open-button coming-soon">
                 <Sparkles size={14} className="text-amber-400 animate-pulse" />
                 Coming Soon
               </div>
@@ -1244,114 +1234,99 @@ export default function App() {
               </div>
             </div>
 
-            <div className="oc-table-container mb-6">
-              <table className="oc-table compact">
-                <thead>
-                  <tr>
-                    <th>Incident Type</th>
-                    <th>Primary Contact</th>
-                    <th>Email Address (Click to Copy)</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td><span className="oc-badge employee">EMPLOYEE INCIDENTS</span></td>
-                    <td className="oc-action-cell"><b>Hani</b> (Select First Insurance)</td>
-                    <td className="oc-bold-cell">
-                      <button 
-                        onClick={() => handleCopyEmail('Hani@selectfirstinsurance.com')}
-                        className="flex items-center gap-1.5 text-blue-600 hover:text-blue-800 hover:underline bg-transparent border-none font-bold cursor-pointer text-left p-0"
-                      >
-                        <Mail size={15} className="text-blue-500 shrink-0" />
-                        Hani@selectfirstinsurance.com
-                        {copiedEmail === 'Hani@selectfirstinsurance.com' ? <Check size={14} className="text-green-600 ml-1 shrink-0" /> : <Copy size={13} className="text-slate-400 opacity-60 ml-1 shrink-0" />}
-                      </button>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td><span className="oc-badge guest">GUEST INCIDENTS</span></td>
-                    <td className="oc-action-cell"><b>Jim Doran</b> (AJ Gallagher)</td>
-                    <td className="oc-bold-cell">
-                      <button 
-                        onClick={() => handleCopyEmail('Jim_doran@ajg.com')}
-                        className="flex items-center gap-1.5 text-blue-600 hover:text-blue-800 hover:underline bg-transparent border-none font-bold cursor-pointer text-left p-0"
-                      >
-                        <Mail size={15} className="text-blue-500 shrink-0" />
-                        Jim_doran@ajg.com
-                        {copiedEmail === 'Jim_doran@ajg.com' ? <Check size={14} className="text-green-600 ml-1 shrink-0" /> : <Copy size={13} className="text-slate-400 opacity-60 ml-1 shrink-0" />}
-                      </button>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
+            {/* Modern Contact Cards Directory */}
+            <div className="flex flex-col gap-4 mb-6">
+              <div className="oc-contact-card">
+                <div className="oc-contact-left">
+                  <span className="oc-contact-badge employee">Employee</span>
+                  <div className="oc-contact-info">
+                    <h4>Hani</h4>
+                    <p>Primary Contact | Select First Insurance</p>
+                  </div>
+                </div>
+                <button 
+                  type="button"
+                  onClick={() => handleCopyEmail('Hani@selectfirstinsurance.com')}
+                  className="oc-contact-email-btn"
+                  title="Click to copy email address"
+                >
+                  <Mail size={14} />
+                  <span>Hani@selectfirstinsurance.com</span>
+                  {copiedEmail === 'Hani@selectfirstinsurance.com' ? (
+                    <Check size={14} className="text-green-600" />
+                  ) : (
+                    <Copy size={12} className="opacity-60" />
+                  )}
+                </button>
+              </div>
+
+              <div className="oc-contact-card">
+                <div className="oc-contact-left">
+                  <span className="oc-contact-badge guest">Guest</span>
+                  <div className="oc-contact-info">
+                    <h4>Jim Doran</h4>
+                    <p>Primary Contact | AJ Gallagher</p>
+                  </div>
+                </div>
+                <button 
+                  type="button"
+                  onClick={() => handleCopyEmail('Jim_doran@ajg.com')}
+                  className="oc-contact-email-btn"
+                  title="Click to copy email address"
+                >
+                  <Mail size={14} />
+                  <span>Jim_doran@ajg.com</span>
+                  {copiedEmail === 'Jim_doran@ajg.com' ? (
+                    <Check size={14} className="text-green-600" />
+                  ) : (
+                    <Copy size={12} className="opacity-60" />
+                  )}
+                </button>
+              </div>
             </div>
 
-            {/* CC List Card Block */}
-            <div className="oc-cc-box">
-              <h3>Always CC the Following on All Incident Reports</h3>
-              <div className="oc-cc-buttons-container">
-                <button 
-                  type="button" 
+            {/* Sleek CC Container Block */}
+            <div className="oc-cc-container">
+              <div className="oc-cc-title">Always CC the Following on All Incident Reports</div>
+              <div className="oc-cc-list">
+                <div 
+                  className="oc-cc-item" 
                   onClick={() => handleCopyEmail('bclark@opportunityrestaurantgroup.com')}
                   title="Click to copy email address"
                 >
                   <span>bclark@opportunityrestaurantgroup.com</span>
-                  <span className={`oc-copy-indicator ${copiedEmail === 'bclark@opportunityrestaurantgroup.com' ? 'copied' : ''}`}>
-                    {copiedEmail === 'bclark@opportunityrestaurantgroup.com' ? (
-                      <>
-                        <Check size={14} />
-                        Copied!
-                      </>
-                    ) : (
-                      <>
-                        <Copy size={13} />
-                        Copy
-                      </>
-                    )}
-                  </span>
-                </button>
+                  {copiedEmail === 'bclark@opportunityrestaurantgroup.com' ? (
+                    <span className="text-green-600 flex items-center gap-1 text-xs font-bold"><Check size={14} /> Copied!</span>
+                  ) : (
+                    <span className="text-slate-400 flex items-center gap-1 text-xs"><Copy size={12} /> Copy</span>
+                  )}
+                </div>
 
-                <button 
-                  type="button" 
+                <div 
+                  className="oc-cc-item" 
                   onClick={() => handleCopyEmail('TFurr@opportunityrestaurantgroup.com')}
                   title="Click to copy email address"
                 >
                   <span>TFurr@opportunityrestaurantgroup.com</span>
-                  <span className={`oc-copy-indicator ${copiedEmail === 'TFurr@opportunityrestaurantgroup.com' ? 'copied' : ''}`}>
-                    {copiedEmail === 'TFurr@opportunityrestaurantgroup.com' ? (
-                      <>
-                        <Check size={14} />
-                        Copied!
-                      </>
-                    ) : (
-                      <>
-                        <Copy size={13} />
-                        Copy
-                      </>
-                    )}
-                  </span>
-                </button>
+                  {copiedEmail === 'TFurr@opportunityrestaurantgroup.com' ? (
+                    <span className="text-green-600 flex items-center gap-1 text-xs font-bold"><Check size={14} /> Copied!</span>
+                  ) : (
+                    <span className="text-slate-400 flex items-center gap-1 text-xs"><Copy size={12} /> Copy</span>
+                  )}
+                </div>
 
-                <button 
-                  type="button" 
+                <div 
+                  className="oc-cc-item" 
                   onClick={() => handleCopyEmail('Jdragoljevic@opportunityrestaurantgroup.com')}
                   title="Click to copy email address"
                 >
                   <span>Jdragoljevic@opportunityrestaurantgroup.com</span>
-                  <span className={`oc-copy-indicator ${copiedEmail === 'Jdragoljevic@opportunityrestaurantgroup.com' ? 'copied' : ''}`}>
-                    {copiedEmail === 'Jdragoljevic@opportunityrestaurantgroup.com' ? (
-                      <>
-                        <Check size={14} />
-                        Copied!
-                      </>
-                    ) : (
-                      <>
-                        <Copy size={13} />
-                        Copy
-                      </>
-                    )}
-                  </span>
-                </button>
+                  {copiedEmail === 'Jdragoljevic@opportunityrestaurantgroup.com' ? (
+                    <span className="text-green-600 flex items-center gap-1 text-xs font-bold"><Check size={14} /> Copied!</span>
+                  ) : (
+                    <span className="text-slate-400 flex items-center gap-1 text-xs"><Copy size={12} /> Copy</span>
+                  )}
+                </div>
               </div>
             </div>
           </section>
