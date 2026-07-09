@@ -32,11 +32,16 @@ import {
   Monitor,
   BookOpen,
   Bell,
-  Settings
+  Settings,
+  HelpCircle,
+  ChevronDown,
+  ChevronUp,
+  Coins,
+  Wallet
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 
-const APP_VERSION = 'v1.2.0';
+const APP_VERSION = 'v1.3.0';
 
 const DOCUMENTS = [
   {
@@ -123,14 +128,16 @@ export default function App() {
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [copiedEmail, setCopiedEmail] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState('home');
+  const [expandedHowTo, setExpandedHowTo] = useState<string | null>(null);
 
   // References for scrollspy and smooth scrolling
   const sectionRefs = {
     home: useRef<HTMLElement | null>(null),
     documents: useRef<HTMLElement | null>(null),
     facilities: useRef<HTMLElement | null>(null),
+    howDoI: useRef<HTMLElement | null>(null),
     contacts: useRef<HTMLElement | null>(null),
-    incidents: useRef<HTMLElement | null>(null),
+    links: useRef<HTMLElement | null>(null),
   };
 
   // Scrollspy to set active tab as user scrolls
@@ -159,7 +166,7 @@ export default function App() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const handleTabClick = (sectionId: 'home' | 'documents' | 'facilities' | 'contacts' | 'incidents') => {
+  const handleTabClick = (sectionId: 'home' | 'documents' | 'facilities' | 'howDoI' | 'contacts' | 'links') => {
     setActiveTab(sectionId);
     if (sectionId === 'home') {
       window.scrollTo({
@@ -444,7 +451,7 @@ export default function App() {
         .oc-search-filter-bar {
           display: flex;
           align-items: center;
-          justify-content: flex-start;
+          justify-content: space-between;
           margin-bottom: 24px;
           padding-bottom: 16px;
           border-bottom: 1px solid var(--oc-line);
@@ -1040,16 +1047,22 @@ export default function App() {
                 Facilities
               </button>
               <button 
+                className={activeTab === 'howDoI' ? 'active' : ''} 
+                onClick={() => handleTabClick('howDoI')}
+              >
+                How Do I?
+              </button>
+              <button 
                 className={activeTab === 'contacts' ? 'active' : ''} 
                 onClick={() => handleTabClick('contacts')}
               >
                 Who to Contact
               </button>
               <button 
-                className={activeTab === 'incidents' ? 'active' : ''} 
-                onClick={() => handleTabClick('incidents')}
+                className={activeTab === 'links' ? 'active' : ''} 
+                onClick={() => handleTabClick('links')}
               >
-                Incident Guidelines
+                Useful Links
               </button>
             </nav>
             <div className={`oc-nav-logos ${activeTab !== 'home' ? 'visible' : ''}`}>
@@ -1134,10 +1147,9 @@ export default function App() {
                   return (
                     <motion.article 
                       key={doc.id}
-                      initial={{ opacity: 0, y: 12 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, scale: 0.95 }}
-                      transition={{ duration: 0.25, delay: idx * 0.03 }}
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1, transition: { duration: 0.25, delay: idx * 0.03 } }}
+                      exit={{ opacity: 0 }}
                       className={`oc-doc-card card-${doc.bandClass}`}
                     >
                       <div className="oc-card-header-row">
@@ -1229,184 +1241,426 @@ export default function App() {
           </div>
         </section>
 
+        {/* How Do I? Section */}
+        <section id="howDoI" ref={sectionRefs.howDoI} className="oc-panel">
+          <div className="oc-section-heading">
+            <span className="oc-icon" aria-hidden="true">
+              <HelpCircle size={20} className="text-emerald-700" />
+            </span>
+            <div>
+              <h2>How Do I?</h2>
+              <p>Quick reference procedures and interactive guides for daily operational tasks.</p>
+            </div>
+          </div>
+
+          <div className="flex flex-col gap-3 mt-6">
+            {/* Accordion Item 1: Cash Reallocation */}
+            <div className="border border-slate-200 rounded-lg overflow-hidden bg-white shadow-sm">
+              <button
+                type="button"
+                onClick={() => setExpandedHowTo(expandedHowTo === 'cash-reallocation' ? null : 'cash-reallocation')}
+                className="w-full flex items-center justify-between p-4 bg-slate-50 hover:bg-slate-100 transition-colors cursor-pointer text-left border-none"
+              >
+                <div className="flex items-center gap-3">
+                  <div className="w-8 h-8 rounded-full bg-emerald-100 flex items-center justify-center text-emerald-700">
+                    <Coins size={16} />
+                  </div>
+                  <div>
+                    <h3 className="m-0 text-sm font-bold text-slate-800">Cash Reallocation</h3>
+                    <p className="m-0 text-xs text-slate-500 font-normal">Step-by-step flow for transferring cash surplus between stores.</p>
+                  </div>
+                </div>
+                <div className="text-slate-400">
+                  {expandedHowTo === 'cash-reallocation' ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
+                </div>
+              </button>
+
+              <AnimatePresence initial={false}>
+                {expandedHowTo === 'cash-reallocation' && (
+                  <motion.div
+                    initial={{ height: 0, opacity: 0 }}
+                    animate={{ height: 'auto', opacity: 1 }}
+                    exit={{ height: 0, opacity: 0 }}
+                    transition={{ duration: 0.25, ease: 'easeInOut' }}
+                    className="overflow-hidden"
+                  >
+                    <div className="p-5 border-t border-slate-200 bg-white">
+                      <div className="flex flex-col gap-5">
+                        <div className="flex gap-4">
+                          <div className="flex-shrink-0 w-7 h-7 rounded-full bg-emerald-50 text-emerald-700 font-bold text-xs flex items-center justify-center border border-emerald-200">1</div>
+                          <div>
+                            <h4 className="m-0 text-xs font-bold uppercase tracking-wider text-slate-700">Identify Stores for Reallocation</h4>
+                            <p className="m-0 mt-1 text-xs text-slate-600 leading-relaxed">
+                              Determine which store has a cash surplus (e.g., store #1234) and which store has a cash deficit (e.g., store #7890). Ensure that the surplus store has enough excess cash to cover the deficit of the other store.
+                            </p>
+                          </div>
+                        </div>
+
+                        <div className="flex gap-4">
+                          <div className="flex-shrink-0 w-7 h-7 rounded-full bg-emerald-50 text-emerald-700 font-bold text-xs flex items-center justify-center border border-emerald-200">2</div>
+                          <div>
+                            <h4 className="m-0 text-xs font-bold uppercase tracking-wider text-slate-700">Pull Cash from Surplus Store</h4>
+                            <p className="m-0 mt-1 text-xs text-slate-600 leading-relaxed">
+                              Only an <b>Above Restaurant Leader (ARL)</b> should physically remove the required amount of cash from the surplus store, ensuring all cash handling procedures are followed to maintain security and accuracy.
+                            </p>
+                          </div>
+                        </div>
+
+                        <div className="flex gap-4">
+                          <div className="flex-shrink-0 w-7 h-7 rounded-full bg-emerald-50 text-emerald-700 font-bold text-xs flex items-center justify-center border border-emerald-200">3</div>
+                          <div>
+                            <h4 className="m-0 text-xs font-bold uppercase tracking-wider text-slate-700">Record Transaction in Surplus Store's Tray</h4>
+                            <p className="m-0 mt-1 text-xs text-slate-600 leading-relaxed">
+                              In the Tray POS of the surplus store, enter the transaction as a <b>paid out</b>. Use the exact description: <code className="bg-slate-100 px-1.5 py-0.5 rounded text-rose-600 font-mono text-[11px]">“Reallocation of cash to [cash short store #]”</code>. This documents where the cash went and creates a clean, clear audit trail.
+                            </p>
+                          </div>
+                        </div>
+
+                        <div className="flex gap-4">
+                          <div className="flex-shrink-0 w-7 h-7 rounded-full bg-emerald-50 text-emerald-700 font-bold text-xs flex items-center justify-center border border-emerald-200">4</div>
+                          <div>
+                            <h4 className="m-0 text-xs font-bold uppercase tracking-wider text-slate-700">Transfer Cash to Deficit Store</h4>
+                            <p className="m-0 mt-1 text-xs text-slate-600 leading-relaxed">
+                              Transport the cash securely to the store experiencing a shortfall. Follow all safety and transport security protocols during this transfer.
+                            </p>
+                          </div>
+                        </div>
+
+                        <div className="flex gap-4">
+                          <div className="flex-shrink-0 w-7 h-7 rounded-full bg-emerald-50 text-emerald-700 font-bold text-xs flex items-center justify-center border border-emerald-200">5</div>
+                          <div>
+                            <h4 className="m-0 text-xs font-bold uppercase tracking-wider text-slate-700">Record Transaction in Cash Short Store's Tray</h4>
+                            <p className="m-0 mt-1 text-xs text-slate-600 leading-relaxed">
+                              Immediately upon arrival to the deficit store, in the Tray POS of the cash deficit store, enter the transaction as a <b>paid in</b>. Use the exact description: <code className="bg-slate-100 px-1.5 py-0.5 rounded text-emerald-700 font-mono text-[11px]">“Reallocation of cash from [cash surplus store]”</code>. This entry documents the receipt of the cash and immediately updates the store's cash balance.
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+
+            {/* Accordion Item 2: Deposits */}
+            <div className="border border-slate-200 rounded-lg overflow-hidden bg-white shadow-sm">
+              <button
+                type="button"
+                onClick={() => setExpandedHowTo(expandedHowTo === 'deposits' ? null : 'deposits')}
+                className="w-full flex items-center justify-between p-4 bg-slate-50 hover:bg-slate-100 transition-colors cursor-pointer text-left border-none"
+              >
+                <div className="flex items-center gap-3">
+                  <div className="w-8 h-8 rounded-full bg-emerald-100 flex items-center justify-center text-emerald-700">
+                    <Wallet size={16} />
+                  </div>
+                  <div>
+                    <h3 className="m-0 text-sm font-bold text-slate-800">Daily Safe Drops &amp; Bank Deposits</h3>
+                    <p className="m-0 text-xs text-slate-500 font-normal">Preparation and secure validation procedures for cash assets.</p>
+                  </div>
+                </div>
+                <div className="text-slate-400">
+                  {expandedHowTo === 'deposits' ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
+                </div>
+              </button>
+
+              <AnimatePresence initial={false}>
+                {expandedHowTo === 'deposits' && (
+                  <motion.div
+                    initial={{ height: 0, opacity: 0 }}
+                    animate={{ height: 'auto', opacity: 1 }}
+                    exit={{ height: 0, opacity: 0 }}
+                    transition={{ duration: 0.25, ease: 'easeInOut' }}
+                    className="overflow-hidden"
+                  >
+                    <div className="p-5 border-t border-slate-200 bg-white">
+                      <div className="flex flex-col gap-4 text-xs text-slate-600 leading-relaxed">
+                        <p className="m-0">Follow this protocol strictly for daily deposits to ensure transparency and prevent discrepancies:</p>
+                        <ul className="m-0 pl-5 flex flex-col gap-2 list-disc">
+                          <li><b>Prepare the Deposit Slip:</b> Count the cash drawer or smart safe total and match it with the POS End-of-Day report. Fill out the bank deposit slip with the exact breakdown of bills and coins.</li>
+                          <li><b>Safe Drop Entry:</b> Log the safe drop in the Tray POS system under "Safe Management". Always include the uniquely numbered deposit bag ID in the memo line for validation.</li>
+                          <li><b>Armored Car / Safe Transport:</b> Store the prepared deposit bag in the smart safe or schedule secure transport to the bank. Ensure dual-custody verification is completed before handover.</li>
+                        </ul>
+                      </div>
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+
+            {/* Accordion Item 3: Paid Outs */}
+            <div className="border border-slate-200 rounded-lg overflow-hidden bg-white shadow-sm">
+              <button
+                type="button"
+                onClick={() => setExpandedHowTo(expandedHowTo === 'paid-outs' ? null : 'paid-outs')}
+                className="w-full flex items-center justify-between p-4 bg-slate-50 hover:bg-slate-100 transition-colors cursor-pointer text-left border-none"
+              >
+                <div className="flex items-center gap-3">
+                  <div className="w-8 h-8 rounded-full bg-emerald-100 flex items-center justify-center text-emerald-700">
+                    <FileText size={16} />
+                  </div>
+                  <div>
+                    <h3 className="m-0 text-sm font-bold text-slate-800">Petty Cash &amp; Local Paid Outs</h3>
+                    <p className="m-0 text-xs text-slate-500 font-normal">Approval rules and logging requirements for local store purchases.</p>
+                  </div>
+                </div>
+                <div className="text-slate-400">
+                  {expandedHowTo === 'paid-outs' ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
+                </div>
+              </button>
+
+              <AnimatePresence initial={false}>
+                {expandedHowTo === 'paid-outs' && (
+                  <motion.div
+                    initial={{ height: 0, opacity: 0 }}
+                    animate={{ height: 'auto', opacity: 1 }}
+                    exit={{ height: 0, opacity: 0 }}
+                    transition={{ duration: 0.25, ease: 'easeInOut' }}
+                    className="overflow-hidden"
+                  >
+                    <div className="p-5 border-t border-slate-200 bg-white">
+                      <div className="flex flex-col gap-4 text-xs text-slate-600 leading-relaxed">
+                        <p className="m-0">All local petty cash disbursements must adhere to the following audit criteria:</p>
+                        <ul className="m-0 pl-5 flex flex-col gap-2 list-disc">
+                          <li><b>Pre-Approval Requirement:</b> Verify the purchase is pre-approved by the Store Manager or Above Restaurant Leader (ARL). Retain physical, itemized receipts for all transactions.</li>
+                          <li><b>POS Log Entry:</b> Under the cashier terminal, select "Paid Out". Choose the appropriate account category (e.g., Maintenance, Supplies, Guest Recovery).</li>
+                          <li><b>Description &amp; Validation:</b> In the memo/description field, type a concise reason (e.g., "Emergency hardware - sink seal repair"). Submit the receipt image or file the receipt in the daily envelope.</li>
+                        </ul>
+                      </div>
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+          </div>
+        </section>
+
         {/* Invoice Submissions and Incident Reports Bottom Grid */}
         <div className="oc-bottom-grid">
-          {/* Financial & Invoice submissions */}
+          {/* Financial & Incident Who to Contact Combined Section */}
           <section id="contacts" ref={sectionRefs.contacts} className="oc-panel">
             <div className="oc-section-heading">
               <span className="oc-icon" aria-hidden="true">
-                <FileCode size={20} className="text-emerald-700" />
+                <Users size={20} className="text-emerald-700" />
               </span>
               <div>
-                <h2>Financial &amp; Invoice Submissions</h2>
-                <p>Follow these rules strictly when submitting POS records or vendor invoices.</p>
+                <h2>Who to Contact &amp; Submissions</h2>
+                <p>Rules and contact directory for financial filings and incident reports.</p>
               </div>
             </div>
 
-            <aside className="oc-warning">
-              <strong>
-                <AlertTriangle size={18} />
-                CRITICAL FINANCIAL SEPARATION RULE
-              </strong>
-              <p><b>Paid Outs are NOT invoices.</b> Do NOT combine AP invoices with POS Paid Out reports. Submit each item separately to the appropriate email address listed below.</p>
-            </aside>
+            {/* Financial & Invoice Submissions */}
+            <div className="mb-8">
+              <h3 className="text-sm font-bold uppercase tracking-wider text-slate-700 mb-4 flex items-center gap-2 border-b border-slate-200 pb-2">
+                <FileCode size={18} className="text-emerald-700" />
+                Financial &amp; Invoice Submissions
+              </h3>
+              
+              <aside className="oc-warning">
+                <strong>
+                  <AlertTriangle size={18} />
+                  CRITICAL FINANCIAL SEPARATION RULE
+                </strong>
+                <p><b>Paid Outs are NOT invoices.</b> Do NOT combine AP invoices with POS Paid Out reports. Submit each item separately to the appropriate email address listed below.</p>
+              </aside>
 
-            <div className="oc-table-container">
-              <table className="oc-table">
-                <thead>
-                  <tr>
-                    <th>Document Category</th>
-                    <th>Guideline &amp; Action</th>
-                    <th>Submit To Email (Click to Copy)</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td><span className="oc-badge paid">POS PAID OUTS</span></td>
-                    <td className="oc-action-cell">Already Posted in the POS System. Send all supporting documentation.</td>
-                    <td className="oc-bold-cell">
-                      <button 
-                        onClick={() => handleCopyEmail('OFA-FPORG@bdo.com')}
-                        className="flex items-center gap-1.5 text-blue-600 hover:text-blue-800 hover:underline bg-transparent border-none font-bold cursor-pointer text-left p-0"
-                      >
-                        <Mail size={15} className="text-blue-500 shrink-0" />
-                        OFA-FPORG@bdo.com
-                        {copiedEmail === 'OFA-FPORG@bdo.com' ? <Check size={14} className="text-green-600 ml-1 shrink-0" /> : <Copy size={13} className="text-slate-400 opacity-60 ml-1 shrink-0" />}
-                      </button>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td><span className="oc-badge invoice">AP INVOICES</span></td>
-                    <td className="oc-action-cell">Accounts Payable. Send all vendor invoices requiring payment.</td>
-                    <td className="oc-bold-cell">
-                      <button 
-                        onClick={() => handleCopyEmail('OFA-AP-ORG@bdo.com')}
-                        className="flex items-center gap-1.5 text-blue-600 hover:text-blue-800 hover:underline bg-transparent border-none font-bold cursor-pointer text-left p-0"
-                      >
-                        <Mail size={15} className="text-blue-500 shrink-0" />
-                        OFA-AP-ORG@bdo.com
-                        {copiedEmail === 'OFA-AP-ORG@bdo.com' ? <Check size={14} className="text-green-600 ml-1 shrink-0" /> : <Copy size={13} className="text-slate-400 opacity-60 ml-1 shrink-0" />}
-                      </button>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
+              <div className="oc-table-container">
+                <table className="oc-table">
+                  <thead>
+                    <tr>
+                      <th>Document Category</th>
+                      <th>Submit To Email (Click to Copy)</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>
+                        <span className="oc-badge paid">POS PAID OUTS</span>
+                        <div className="text-[11px] text-slate-500 mt-1">Already Posted in the POS. Send all supporting documentation.</div>
+                      </td>
+                      <td className="oc-bold-cell">
+                        <button 
+                          onClick={() => handleCopyEmail('OFA-FPORG@bdo.com')}
+                          className="flex items-center gap-1.5 text-blue-600 hover:text-blue-800 hover:underline bg-transparent border-none font-bold cursor-pointer text-left p-0"
+                        >
+                          <Mail size={15} className="text-blue-500 shrink-0" />
+                          OFA-FPORG@bdo.com
+                          {copiedEmail === 'OFA-FPORG@bdo.com' ? <Check size={14} className="text-green-600 ml-1 shrink-0" /> : <Copy size={13} className="text-slate-400 opacity-60 ml-1 shrink-0" />}
+                        </button>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <span className="oc-badge invoice">AP INVOICES</span>
+                        <div className="text-[11px] text-slate-500 mt-1">Accounts Payable. Send all vendor invoices requiring payment.</div>
+                      </td>
+                      <td className="oc-bold-cell">
+                        <button 
+                          onClick={() => handleCopyEmail('OFA-AP-ORG@bdo.com')}
+                          className="flex items-center gap-1.5 text-blue-600 hover:text-blue-800 hover:underline bg-transparent border-none font-bold cursor-pointer text-left p-0"
+                        >
+                          <Mail size={15} className="text-blue-500 shrink-0" />
+                          OFA-AP-ORG@bdo.com
+                          {copiedEmail === 'OFA-AP-ORG@bdo.com' ? <Check size={14} className="text-green-600 ml-1 shrink-0" /> : <Copy size={13} className="text-slate-400 opacity-60 ml-1 shrink-0" />}
+                        </button>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            {/* Incident Report Guidelines */}
+            <div>
+              <h3 className="text-sm font-bold uppercase tracking-wider text-slate-700 mb-4 flex items-center gap-2 border-b border-slate-200 pb-2">
+                <AlertCircle size={18} className="text-emerald-700" />
+                Incident Report Guidelines
+              </h3>
+              <p className="text-xs text-slate-500 mb-4">Send reports immediately based on target category. Ensure mandatory team CCs.</p>
+
+              {/* Modern Contact Cards Directory */}
+              <div className="flex flex-col gap-3 mb-4">
+                <div className="oc-contact-card">
+                  <div className="oc-contact-left">
+                    <span className="oc-contact-badge employee">Employee</span>
+                    <div className="oc-contact-info">
+                      <h4 className="m-0 text-sm font-semibold text-slate-800">Hani</h4>
+                      <p className="m-0 text-xs text-slate-500">Primary Contact | Select First Insurance</p>
+                    </div>
+                  </div>
+                  <button 
+                    type="button"
+                    onClick={() => handleCopyEmail('Hani@selectfirstinsurance.com')}
+                    className="oc-contact-email-btn"
+                    title="Click to copy email address"
+                  >
+                    <Mail size={14} />
+                    <span className="text-xs">Hani@selectfirstinsurance.com</span>
+                    {copiedEmail === 'Hani@selectfirstinsurance.com' ? (
+                      <Check size={14} className="text-green-600" />
+                    ) : (
+                      <Copy size={12} className="opacity-60" />
+                    )}
+                  </button>
+                </div>
+
+                <div className="oc-contact-card">
+                  <div className="oc-contact-left">
+                    <span className="oc-contact-badge guest">Guest</span>
+                    <div className="oc-contact-info">
+                      <h4 className="m-0 text-sm font-semibold text-slate-800">Jim Doran</h4>
+                      <p className="m-0 text-xs text-slate-500">Primary Contact | AJ Gallagher</p>
+                    </div>
+                  </div>
+                  <button 
+                    type="button"
+                    onClick={() => handleCopyEmail('Jim_doran@ajg.com')}
+                    className="oc-contact-email-btn"
+                    title="Click to copy email address"
+                  >
+                    <Mail size={14} />
+                    <span className="text-xs">Jim_doran@ajg.com</span>
+                    {copiedEmail === 'Jim_doran@ajg.com' ? (
+                      <Check size={14} className="text-green-600" />
+                    ) : (
+                      <Copy size={12} className="opacity-60" />
+                    )}
+                  </button>
+                </div>
+              </div>
+
+              {/* Sleek CC Container Block */}
+              <div className="oc-cc-container">
+                <div className="oc-cc-title">Always CC the Following on All Incident Reports</div>
+                <div className="oc-cc-list">
+                  <div 
+                    className="oc-cc-item" 
+                    onClick={() => handleCopyEmail('bclark@opportunityrestaurantgroup.com')}
+                    title="Click to copy email address"
+                  >
+                    <span>bclark@opportunityrestaurantgroup.com</span>
+                    {copiedEmail === 'bclark@opportunityrestaurantgroup.com' ? (
+                      <span className="text-green-600 flex items-center gap-1 text-xs font-bold"><Check size={14} /> Copied!</span>
+                    ) : (
+                      <span className="text-slate-400 flex items-center gap-1 text-xs"><Copy size={12} /> Copy</span>
+                    )}
+                  </div>
+
+                  <div 
+                    className="oc-cc-item" 
+                    onClick={() => handleCopyEmail('TFurr@opportunityrestaurantgroup.com')}
+                    title="Click to copy email address"
+                  >
+                    <span>TFurr@opportunityrestaurantgroup.com</span>
+                    {copiedEmail === 'TFurr@opportunityrestaurantgroup.com' ? (
+                      <span className="text-green-600 flex items-center gap-1 text-xs font-bold"><Check size={14} /> Copied!</span>
+                    ) : (
+                      <span className="text-slate-400 flex items-center gap-1 text-xs"><Copy size={12} /> Copy</span>
+                    )}
+                  </div>
+
+                  <div 
+                    className="oc-cc-item" 
+                    onClick={() => handleCopyEmail('Jdragoljevic@opportunityrestaurantgroup.com')}
+                    title="Click to copy email address"
+                  >
+                    <span>Jdragoljevic@opportunityrestaurantgroup.com</span>
+                    {copiedEmail === 'Jdragoljevic@opportunityrestaurantgroup.com' ? (
+                      <span className="text-green-600 flex items-center gap-1 text-xs font-bold"><Check size={14} /> Copied!</span>
+                    ) : (
+                      <span className="text-slate-400 flex items-center gap-1 text-xs"><Copy size={12} /> Copy</span>
+                    )}
+                  </div>
+                </div>
+              </div>
             </div>
           </section>
 
-          {/* Incident Report Guidelines */}
-          <section id="incidents" ref={sectionRefs.incidents} className="oc-panel">
+          {/* Useful Links & Tools Panel */}
+          <section id="links" ref={sectionRefs.links} className="oc-panel">
             <div className="oc-section-heading">
               <span className="oc-icon" aria-hidden="true">
-                <AlertCircle size={20} className="text-emerald-700" />
+                <ExternalLink size={20} className="text-emerald-700" />
               </span>
               <div>
-                <h2>Incident Report Guidelines</h2>
-                <p>Send reports immediately based on target category. Ensure mandatory team CCs.</p>
+                <h2>Useful Links &amp; Tools</h2>
+                <p>Quick access to internal helper apps, calculators, and external resource platforms.</p>
               </div>
             </div>
 
-            {/* Modern Contact Cards Directory */}
-            <div className="flex flex-col gap-4 mb-6">
-              <div className="oc-contact-card">
-                <div className="oc-contact-left">
-                  <span className="oc-contact-badge employee">Employee</span>
-                  <div className="oc-contact-info">
-                    <h4>Hani</h4>
-                    <p>Primary Contact | Select First Insurance</p>
+            <div className="oc-card-grid" style={{ gridTemplateColumns: '1fr' }}>
+              <article className="oc-doc-card card-forest">
+                <div className="oc-card-header-row">
+                  <div className="oc-card-icon-wrapper forest">
+                    <Sparkles size={20} className="stroke-[2.5]" />
                   </div>
+                  <span className="oc-card-format-badge">TOOL</span>
                 </div>
-                <button 
-                  type="button"
-                  onClick={() => handleCopyEmail('Hani@selectfirstinsurance.com')}
-                  className="oc-contact-email-btn"
-                  title="Click to copy email address"
-                >
-                  <Mail size={14} />
-                  <span>Hani@selectfirstinsurance.com</span>
-                  {copiedEmail === 'Hani@selectfirstinsurance.com' ? (
-                    <Check size={14} className="text-green-600" />
-                  ) : (
-                    <Copy size={12} className="opacity-60" />
-                  )}
-                </button>
-              </div>
-
-              <div className="oc-contact-card">
-                <div className="oc-contact-left">
-                  <span className="oc-contact-badge guest">Guest</span>
-                  <div className="oc-contact-info">
-                    <h4>Jim Doran</h4>
-                    <p>Primary Contact | AJ Gallagher</p>
-                  </div>
+                <div className="oc-card-title-container mb-2">
+                  <h3 className="flex items-center gap-2">
+                    Catering Calculator
+                    <ArrowUpRight size={16} className="text-emerald-600 shrink-0" />
+                  </h3>
                 </div>
-                <button 
-                  type="button"
-                  onClick={() => handleCopyEmail('Jim_doran@ajg.com')}
-                  className="oc-contact-email-btn"
-                  title="Click to copy email address"
+                <p className="oc-card-description">
+                  Our official calculator for streamlining catering quotes, portion sizes, and customized pricing setup.
+                </p>
+                <a 
+                  href="https://cateringcalculator.streamlit.app" 
+                  target="_blank" 
+                  rel="noopener noreferrer" 
+                  className="oc-open-button"
                 >
-                  <Mail size={14} />
-                  <span>Jim_doran@ajg.com</span>
-                  {copiedEmail === 'Jim_doran@ajg.com' ? (
-                    <Check size={14} className="text-green-600" />
-                  ) : (
-                    <Copy size={12} className="opacity-60" />
-                  )}
-                </button>
-              </div>
-            </div>
-
-            {/* Sleek CC Container Block */}
-            <div className="oc-cc-container">
-              <div className="oc-cc-title">Always CC the Following on All Incident Reports</div>
-              <div className="oc-cc-list">
-                <div 
-                  className="oc-cc-item" 
-                  onClick={() => handleCopyEmail('bclark@opportunityrestaurantgroup.com')}
-                  title="Click to copy email address"
-                >
-                  <span>bclark@opportunityrestaurantgroup.com</span>
-                  {copiedEmail === 'bclark@opportunityrestaurantgroup.com' ? (
-                    <span className="text-green-600 flex items-center gap-1 text-xs font-bold"><Check size={14} /> Copied!</span>
-                  ) : (
-                    <span className="text-slate-400 flex items-center gap-1 text-xs"><Copy size={12} /> Copy</span>
-                  )}
-                </div>
-
-                <div 
-                  className="oc-cc-item" 
-                  onClick={() => handleCopyEmail('TFurr@opportunityrestaurantgroup.com')}
-                  title="Click to copy email address"
-                >
-                  <span>TFurr@opportunityrestaurantgroup.com</span>
-                  {copiedEmail === 'TFurr@opportunityrestaurantgroup.com' ? (
-                    <span className="text-green-600 flex items-center gap-1 text-xs font-bold"><Check size={14} /> Copied!</span>
-                  ) : (
-                    <span className="text-slate-400 flex items-center gap-1 text-xs"><Copy size={12} /> Copy</span>
-                  )}
-                </div>
-
-                <div 
-                  className="oc-cc-item" 
-                  onClick={() => handleCopyEmail('Jdragoljevic@opportunityrestaurantgroup.com')}
-                  title="Click to copy email address"
-                >
-                  <span>Jdragoljevic@opportunityrestaurantgroup.com</span>
-                  {copiedEmail === 'Jdragoljevic@opportunityrestaurantgroup.com' ? (
-                    <span className="text-green-600 flex items-center gap-1 text-xs font-bold"><Check size={14} /> Copied!</span>
-                  ) : (
-                    <span className="text-slate-400 flex items-center gap-1 text-xs"><Copy size={12} /> Copy</span>
-                  )}
-                </div>
-              </div>
+                  Launch Calculator
+                  <ExternalLink size={14} className="ml-1" />
+                </a>
+              </article>
             </div>
           </section>
         </div>
 
         {/* Footer */}
         <footer className="oc-footer">
-          <div>© 2026 Lumps Are Good &bull; Version {APP_VERSION}</div>
+          <div>© 2026 Lumps Are Good</div>
           <div className="text-xs text-slate-400 font-normal">We ❤️ You &bull; But You've Reached The End</div>
         </footer>
 
