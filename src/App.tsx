@@ -732,6 +732,7 @@ export default function App() {
 
         .oc-badge.paid { background: #dcfce7; color: #166534; border: 1px solid #bbf7d0; }
         .oc-badge.invoice { background: #dbeafe; color: #1e40af; border: 1px solid #bfdbfe; }
+        .oc-badge.payroll { background: #fef08a; color: #854d0e; border: 1px solid #fde047; }
 
         /* Contact Cards Directory */
         .oc-contact-card {
@@ -1501,6 +1502,22 @@ export default function App() {
                           <Mail size={15} className="text-blue-500 shrink-0" />
                           OFA-AP-ORG@bdo.com
                           {copiedEmail === 'OFA-AP-ORG@bdo.com' ? <Check size={14} className="text-green-600 ml-1 shrink-0" /> : <Copy size={13} className="text-slate-400 opacity-60 ml-1 shrink-0" />}
+                        </button>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <span className="oc-badge payroll">PAYROLL</span>
+                        <div className="text-[11px] text-slate-500 mt-1">Payroll inquiries, adjustments, and documentation.</div>
+                      </td>
+                      <td className="oc-bold-cell">
+                        <button 
+                          onClick={() => handleCopyEmail('OFA-PR-ORG@bdo.com')}
+                          className="flex items-center gap-1.5 text-blue-600 hover:text-blue-800 hover:underline bg-transparent border-none font-bold cursor-pointer text-left p-0"
+                        >
+                          <Mail size={15} className="text-blue-500 shrink-0" />
+                          OFA-PR-ORG@bdo.com
+                          {copiedEmail === 'OFA-PR-ORG@bdo.com' ? <Check size={14} className="text-green-600 ml-1 shrink-0" /> : <Copy size={13} className="text-slate-400 opacity-60 ml-1 shrink-0" />}
                         </button>
                       </td>
                     </tr>
