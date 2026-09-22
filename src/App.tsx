@@ -37,89 +37,238 @@ import {
   ChevronDown,
   ChevronUp,
   Coins,
-  Wallet
+  Wallet,
+  MapPin,
+  X,
+  HeartHandshake,
+  Bot,
+  MessageSquare
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
+import { OpsChatbot } from './components/OpsChatbot';
+import { SyrupAvatar } from './components/SyrupAvatar';
 
 const APP_VERSION = 'v1.3.0';
 
+interface StateVariant {
+  state: string;
+  abbr: string;
+  link: string;
+}
+
+const WORKERS_COMP_VARIANTS: StateVariant[] = [
+  {
+    state: 'Alabama',
+    abbr: 'AL',
+    link: 'https://opportunityrestaurantgroup-my.sharepoint.com/:b:/p/gchadrick/IQAnNy_4jsxNQ6CQcGd71UZCAc7ys0xq-hUIYEb80iO1T9s?web=1'
+  },
+  {
+    state: 'Delaware',
+    abbr: 'DE',
+    link: 'https://opportunityrestaurantgroup-my.sharepoint.com/:b:/p/gchadrick/IQD-UfeUcMJiR7GQzpEX5ynbAQWBApL-brI2fmVPhM5MF1U?web=1'
+  },
+  {
+    state: 'Georgia',
+    abbr: 'GA',
+    link: 'https://opportunityrestaurantgroup-my.sharepoint.com/:b:/p/gchadrick/IQDrExjGVKeJT4FepEyb3HERAVq7s3O0toCYUNoYPDH20gI?web=1'
+  },
+  {
+    state: 'Indiana',
+    abbr: 'IN',
+    link: 'https://opportunityrestaurantgroup-my.sharepoint.com/:b:/p/gchadrick/IQB9o9ebuzSlQLotx0-debFFAfCZHJVGJI3PQ249TwobCi0?web=1'
+  },
+  {
+    state: 'Kentucky',
+    abbr: 'KY',
+    link: 'https://opportunityrestaurantgroup-my.sharepoint.com/:b:/p/gchadrick/IQCTC80fdbHURrDoHroUASPlAdFqlUu9dCwGSBO8fR0U__M?web=1'
+  },
+  {
+    state: 'Maryland',
+    abbr: 'MD',
+    link: 'https://opportunityrestaurantgroup-my.sharepoint.com/:b:/p/gchadrick/IQDsa60S0orXR7F4g_aEquQHAYj7ZOB2srhwgQg1dVtqHDw?web=1'
+  },
+  {
+    state: 'Michigan',
+    abbr: 'MI',
+    link: 'https://opportunityrestaurantgroup-my.sharepoint.com/:b:/p/gchadrick/IQAO7xv6a5iKQYHNs0_p9-NQASTRdkn6KjCE3bY-mHvcN0w?web=1'
+  },
+  {
+    state: 'New Jersey',
+    abbr: 'NJ',
+    link: 'https://opportunityrestaurantgroup-my.sharepoint.com/:b:/p/gchadrick/IQCL1cvRjab8T6JlGXtfKrecAS_0nuKYGQ2ztulLqNR6qEM?web=1'
+  },
+  {
+    state: 'New York',
+    abbr: 'NY',
+    link: 'https://opportunityrestaurantgroup-my.sharepoint.com/:b:/p/gchadrick/IQB7uecqyvveRpuQZkRxf6VKAVFCsmkZc18ExJyMxfiVGto?web=1'
+  },
+  {
+    state: 'North Carolina',
+    abbr: 'NC',
+    link: 'https://opportunityrestaurantgroup-my.sharepoint.com/:b:/p/gchadrick/IQAw1lAf_l9OSqFBV4Cq_9KHAe3H9P5Gi-v_ICqbVjCj0f4?web=1'
+  },
+  {
+    state: 'Ohio',
+    abbr: 'OH',
+    link: 'https://opportunityrestaurantgroup-my.sharepoint.com/:b:/p/gchadrick/IQA9oN-1UVVNRLA58bEp9DZQAYEol23jySGtxtSUFw0e-14?web=1'
+  },
+  {
+    state: 'Pennsylvania',
+    abbr: 'PA',
+    link: 'https://opportunityrestaurantgroup-my.sharepoint.com/:b:/p/gchadrick/IQDZLqcuQ1dpQaQ2QNdROjiyARfnG2D4ssdIWabezwulf5k?web=1'
+  },
+  {
+    state: 'South Carolina',
+    abbr: 'SC',
+    link: 'https://opportunityrestaurantgroup-my.sharepoint.com/:b:/p/gchadrick/IQCT4mxUBrHnQKangkd8UxZjAV5U_xQAdcuWgUsJzOKO_Dw?web=1'
+  },
+  {
+    state: 'Virginia',
+    abbr: 'VA',
+    link: 'https://opportunityrestaurantgroup-my.sharepoint.com/:b:/p/gchadrick/IQBUet4cX6OpS6eq5jnJ40N7ASW3ygplJJyNB3x8iPE8Zks?web=1'
+  }
+];
+
+const WORKERS_COMP_CONTACTS = [
+  {
+    name: 'Taylor Maltese',
+    email: 'tmaltese@opportunityrestaurantgroup.com',
+    role: 'Opportunity Restaurant Group (HR)'
+  },
+  {
+    name: 'Hani Ascha',
+    email: 'hani@selectfirstinsurance.com',
+    role: 'Select First Insurance'
+  },
+  {
+    name: 'Daniel Salazar',
+    email: 'DSalazar@selectfirstinsurance.com',
+    role: 'Select First Insurance'
+  }
+];
+
 const DOCUMENTS = [
   {
-    id: 'doc-sick-leave',
-    title: 'Employee Sick Leave',
-    description: 'Form to request and document sick leave policies.',
-    category: 'HR',
+    id: 'doc-amcares-nurse-triage',
+    title: 'AmCare Nurse Triage Form',
+    description: 'Post in employee shared space in the event an employee would like to speak with a Nurse before reporting a Workers’ Comp claim.',
+    category: 'Safety',
     format: 'PDF',
-    icon: FileText,
+    icon: PhoneCall,
     bandClass: 'green',
-    bandIcon: '▣',
-    link: 'https://opportunityrestaurantgroup.sharepoint.com/:b:/s/OpportunityCentral/IQArgHfe_0kXRILc8hn8_VnuAWyBPk1IzwyiVtBXmu2fgCM?e=o8gcKq'
+    bandIcon: '☎',
+    link: 'https://opportunityrestaurantgroup-my.sharepoint.com/:b:/p/gchadrick/IQA95dLyatBbTZ8Wl6o1cSJrAXEY-LwscRwQCqOub2VwSTw?web=1'
   },
   {
-    id: 'doc-termination',
-    title: 'Employee Termination Form',
-    description: 'Formal checklist and notification for employee offboarding.',
+    id: 'doc-corrective-action',
+    title: 'Corrective Action Form',
+    description: 'Most current version. Use for all performance/behavior documentation going forward; retire older versions. Submit via SharePoint.',
     category: 'HR',
-    format: 'DOCX',
-    icon: UserMinus,
-    bandClass: 'red',
-    bandIcon: '♙',
-    link: 'https://opportunityrestaurantgroup.sharepoint.com/:w:/s/OpportunityCentral/IQDsQ6E9tBFJSbNQezPQzt_HAayb_uGH2v8Q8Ks6Fob4ckg?e=grp7zf'
-  },
-  {
-    id: 'doc-warning',
-    title: 'Employee Warning Form',
-    description: 'Disciplinary warning notice template for store managers.',
-    category: 'Operations',
     format: 'DOCX',
     icon: AlertTriangle,
     bandClass: 'orange',
     bandIcon: '✎',
-    link: 'https://opportunityrestaurantgroup.sharepoint.com/:w:/s/OpportunityCentral/IQD1uBKeWWLpSoVXSxLaUkrmAZwvLw9qu7htUDP4GceYiFo?e=f9vAf8'
+    link: 'https://opportunityrestaurantgroup-my.sharepoint.com/:w:/p/gchadrick/IQBiizq_B3PpQoBwclkQoscvAeD8uuXm04c41sFQtQ0y5Zo?web=1'
   },
   {
     id: 'doc-food-critical',
     title: 'Food Critical Checklist',
-    description: 'Daily shift health and safety standards verification sheet.',
+    description: 'Daily shift food health, refrigeration, sanitation, and safety standards verification sheet.',
     category: 'Food Safety',
     format: 'DOCX',
     icon: ShieldCheck,
     bandClass: 'forest',
     bandIcon: '☑',
-    link: 'https://opportunityrestaurantgroup.sharepoint.com/:w:/s/OpportunityCentral/IQD77cKoCMXLRLw7xAwXaM1UAbhkZwp7Kr68OIBlBrG4Xa0?e=sRd0Jl'
+    link: 'https://opportunityrestaurantgroup-my.sharepoint.com/:w:/p/gchadrick/IQDKUBl0V--nT48yPiu9oUrWARiCADLGVMaBrQ7t7xFXwyk?web=1'
   },
   {
-    id: 'doc-incident',
-    title: 'Incident Report',
-    description: 'Standard reporting form for employee or guest accidents.',
+    id: 'doc-ga-haccp',
+    title: 'Georgia HACCP Guide',
+    description: 'Guidelines and procedures for Hazard Analysis and Critical Control Point compliance.',
+    category: 'Food Safety',
+    format: 'DOCX',
+    icon: BookOpen,
+    bandClass: 'forest',
+    bandIcon: '✩',
+    link: 'https://opportunityrestaurantgroup-my.sharepoint.com/:w:/p/gchadrick/IQD5GFYxN8Q6SZhERDUWF93SAYJSRdSyDNNW7MgcY0DBW5g?web=1'
+  },
+  {
+    id: 'doc-guest-incident',
+    title: 'Guest Incident Report Form',
+    description: 'Use for any guest/customer incident, injury, or accident on site.',
     category: 'Safety',
     format: 'DOCX',
     icon: ClipboardSignature,
+    bandClass: 'red',
+    bandIcon: '⚠',
+    link: 'https://opportunityrestaurantgroup-my.sharepoint.com/:w:/p/gchadrick/IQAa06jhBhCxSI7Tly-GwrEfAdsi-fpAJ7U3aJ_w2Da7ntc?web=1'
+  },
+  {
+    id: 'doc-hr-contact-sheet',
+    title: 'HR Contact Sheet (IHOP)',
+    description: "Post where your leadership team can see it — who to email for payroll, workers' comp, guest incidents, or general HR.",
+    category: 'HR',
+    format: 'PDF',
+    icon: Users,
+    bandClass: 'green',
+    bandIcon: '📇',
+    link: 'https://opportunityrestaurantgroup-my.sharepoint.com/:b:/p/gchadrick/IQB8FkTK_rtVSrXhpF3FcnHHAWXQbE2Ak21BcvdjCUujePE?web=1'
+  },
+  {
+    id: 'doc-leave-of-absence',
+    title: 'Leave of Absence Request Form',
+    description: 'Starts the interactive process with HR. Not an automatic approval.',
+    category: 'HR',
+    format: 'DOCX',
+    icon: FileText,
+    bandClass: 'blue',
+    bandIcon: '📋',
+    link: 'https://opportunityrestaurantgroup-my.sharepoint.com/:w:/p/gchadrick/IQAV2op-OSf7T7rHpVPjHKdYAeEf_pzOuSAfKE1nyB3efGg?web=1'
+  },
+  {
+    id: 'doc-reasonable-accommodation',
+    title: 'Reasonable Accommodation Request Form',
+    description: 'Starts the interactive process with HR for workplace accommodations. Not an automatic approval.',
+    category: 'HR',
+    format: 'DOCX',
+    icon: HeartHandshake,
     bandClass: 'purple',
-    bandIcon: '♢',
-    link: 'https://opportunityrestaurantgroup.sharepoint.com/:w:/s/OpportunityCentral/IQDqJyZyVRBOQKepaccExzkwATAqfOGb6M0WW8nsyZ2PhEE?e=tExHai'
+    bandIcon: '🤝',
+    link: 'https://opportunityrestaurantgroup-my.sharepoint.com/:w:/p/gchadrick/IQA45Kjqu_5rSbVcrLHJAEvgAZtUiP_DCU5szuf4hYVNWgk?web=1'
   },
   {
     id: 'doc-temp-log',
     title: 'Temperature Log',
-    description: 'Mandatory line and cooling logs.',
+    description: 'Mandatory daily food line, hold, and cooling log sheets.',
     category: 'Food Safety',
     format: 'PDF',
     icon: Thermometer,
     bandClass: 'blue',
     bandIcon: '♨',
-    link: 'https://opportunityrestaurantgroup.sharepoint.com/:b:/s/OpportunityCentral/IQATIKGa1RDMTq-RPW5jGZh8AdLTcig0wDunFuIYXiXk7yc?e=TA0iyN'
+    link: 'https://opportunityrestaurantgroup-my.sharepoint.com/:b:/p/gchadrick/IQAmW7688o3oRZsrsVpvlg0tAesBnBVkHvjwOCn6w6_VFr4?web=1'
   },
   {
-    id: 'doc-ga-haccp',
-    title: 'Georgia HACCP Guide',
-    description: 'Guidelines for Hazard Analysis and Critical Control Point compliance.',
-    category: 'Food Safety',
-    format: 'PDF',
-    icon: BookOpen,
-    bandClass: 'purple',
-    bandIcon: '✩',
-    link: 'https://opportunityrestaurantgroup.sharepoint.com/:w:/s/OpportunityCentral/IQBOUq1vGVwLT5oTMB8Xy3C_ASZXJaz_HzV6FUM7clnAlNA?e=FTfuds'
+    id: 'doc-termination',
+    title: 'Termination Form',
+    description: 'Most current version for employee separations. Save via SharePoint (ask your District Manager on accessing SharePoint).',
+    category: 'HR',
+    format: 'DOCX',
+    icon: UserMinus,
+    bandClass: 'crimson',
+    bandIcon: '♙',
+    link: 'https://opportunityrestaurantgroup-my.sharepoint.com/:w:/p/gchadrick/IQBfCnP82SFlQ5xX8jd25ed8Ac7mpg8bt_XkXFzKKqZK0Rk?web=1'
+  },
+  {
+    id: 'doc-workers-comp-states',
+    title: "Workers' Comp Form",
+    description: "State specific initial report form. Use the appropriate report for your state market when reporting a workplace injury.",
+    category: 'Safety',
+    format: 'Multi-State',
+    icon: FileText,
+    bandClass: 'forest',
+    bandIcon: '⛑',
+    link: '',
+    hasVariants: true
   }
 ];
 
@@ -129,6 +278,48 @@ export default function App() {
   const [copiedEmail, setCopiedEmail] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState('home');
   const [expandedHowTo, setExpandedHowTo] = useState<string | null>(null);
+  const [workersCompModalOpen, setWorkersCompModalOpen] = useState(false);
+  const [selectedStateIndex, setSelectedStateIndex] = useState(0);
+  const [copiedAll, setCopiedAll] = useState(false);
+  const [chatbotOpen, setChatbotOpen] = useState(false);
+
+  // Close modal on Escape key
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        setWorkersCompModalOpen(false);
+      }
+    };
+    if (workersCompModalOpen) {
+      window.addEventListener('keydown', handleKeyDown);
+    }
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [workersCompModalOpen]);
+
+  // If user searched for a specific state, preselect that state
+  useEffect(() => {
+    if (!searchTerm.trim()) return;
+    const term = searchTerm.trim().toLowerCase();
+    const matchIdx = WORKERS_COMP_VARIANTS.findIndex(
+      v => term.includes(v.state.toLowerCase()) || (term.length === 2 && term === v.abbr.toLowerCase())
+    );
+    if (matchIdx !== -1) {
+      setSelectedStateIndex(matchIdx);
+    }
+  }, [searchTerm]);
+
+  const handleCopyText = (text: string, isAll?: boolean) => {
+    if (navigator?.clipboard?.writeText) {
+      navigator.clipboard.writeText(text).catch(() => {});
+    }
+    if (isAll) {
+      setCopiedAll(true);
+      setTimeout(() => setCopiedAll(false), 2000);
+    } else {
+      setCopiedEmail(text);
+      setTimeout(() => setCopiedEmail(null), 2000);
+    }
+  };
 
   // References for scrollspy and smooth scrolling
   const sectionRefs = {
@@ -512,6 +703,7 @@ export default function App() {
 
         .oc-doc-card.card-green { border-left-color: #22c55e; }
         .oc-doc-card.card-red { border-left-color: #ef4444; }
+        .oc-doc-card.card-crimson { border-left-color: #dc2626; }
         .oc-doc-card.card-orange { border-left-color: #f97316; }
         .oc-doc-card.card-forest { border-left-color: #15803d; }
         .oc-doc-card.card-purple { border-left-color: #a855f7; }
@@ -544,6 +736,7 @@ export default function App() {
 
         .oc-card-icon-wrapper.green { background-color: #f0fdf4; color: #22c55e; }
         .oc-card-icon-wrapper.red { background-color: #fef2f2; color: #ef4444; }
+        .oc-card-icon-wrapper.crimson { background-color: #fef2f2; color: #dc2626; }
         .oc-card-icon-wrapper.orange { background-color: #fff7ed; color: #f97316; }
         .oc-card-icon-wrapper.forest { background-color: #f0fdf4; color: #15803d; }
         .oc-card-icon-wrapper.purple { background-color: #f5f3ff; color: #a855f7; }
@@ -777,10 +970,28 @@ export default function App() {
           border: 1px solid #ffedd5;
         }
 
+        .oc-contact-badge.payroll {
+          background-color: #fef9c3;
+          color: #854d0e;
+          border: 1px solid #fef08a;
+        }
+
+        .oc-contact-badge.wc {
+          background-color: #f0fdf4;
+          color: #166534;
+          border: 1px solid #bbf7d0;
+        }
+
+        .oc-contact-badge.hr {
+          background-color: #eff6ff;
+          color: #1d4ed8;
+          border: 1px solid #dbeafe;
+        }
+
         .oc-contact-badge.guest {
-          background-color: #f0f9ff;
-          color: #0284c7;
-          border: 1px solid #e0f2fe;
+          background-color: #fef2f2;
+          color: #dc2626;
+          border: 1px solid #fee2e2;
         }
 
         .oc-contact-info h4 {
@@ -1047,12 +1258,14 @@ export default function App() {
               >
                 Facilities
               </button>
+              {/* Commented out as requested
               <button 
                 className={activeTab === 'howDoI' ? 'active' : ''} 
                 onClick={() => handleTabClick('howDoI')}
               >
                 How Do I?
               </button>
+              */}
               <button 
                 className={activeTab === 'contacts' ? 'active' : ''} 
                 onClick={() => handleTabClick('contacts')}
@@ -1096,10 +1309,25 @@ export default function App() {
 
         {/* Welcome Block */}
         <section id="home" ref={sectionRefs.home} className="oc-welcome">
-          <div className="oc-info-icon" aria-hidden="true">i</div>
-          <p className="text-sm m-0" style={{ color: '#3b5c38', fontWeight: 500, lineHeight: '1.5' }}>
-            <strong style={{ color: 'var(--oc-green-dark)', fontWeight: 800 }}>Welcome to Opportunity Central:</strong> Your single point of access for all operational templates, checklists, and contact rules. Use the dashboard below to open forms or reference submission rules instantly.
-          </p>
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3.5 w-full">
+            <div className="flex items-start gap-3">
+              <div className="oc-info-icon shrink-0" aria-hidden="true">i</div>
+              <p className="text-sm m-0" style={{ color: '#3b5c38', fontWeight: 500, lineHeight: '1.5' }}>
+                <strong style={{ color: 'var(--oc-green-dark)', fontWeight: 800 }}>Welcome to Opportunity Central:</strong> Your single point of access for all operational templates, checklists, and contact rules. Use the search below to open forms or navigate directly to required documents.
+              </p>
+            </div>
+            {/* Syrup Assistant temporarily commented out for launch:
+            <button
+              type="button"
+              onClick={() => setChatbotOpen(true)}
+              className="shrink-0 px-3.5 py-2 bg-emerald-800 hover:bg-emerald-900 text-white rounded-xl font-bold text-xs inline-flex items-center gap-2 shadow-xs transition-all cursor-pointer border border-emerald-700/80 hover:scale-[1.02]"
+              title="Ask Syrup questions about store procedures"
+            >
+              <SyrupAvatar size={20} />
+              <span>Ask Syrup</span>
+            </button>
+            */}
+          </div>
         </section>
 
         {/* Documents Panel */}
@@ -1164,15 +1392,29 @@ export default function App() {
                       </div>
                       <p className="oc-card-description">{doc.description}</p>
                       
-                      <a 
-                        className="oc-open-button" 
-                        href={doc.link} 
-                        target="_blank" 
-                        rel="noopener noreferrer"
-                      >
-                        <ExternalLink size={15} />
-                        Open Form
-                      </a>
+                      {doc.hasVariants ? (
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setWorkersCompModalOpen(true);
+                            setSelectedStateIndex(0);
+                          }}
+                          className="oc-open-button w-full inline-flex items-center justify-center gap-2 font-medium cursor-pointer shadow-xs"
+                        >
+                          <Layers size={15} />
+                          <span>Select State &amp; View Forms</span>
+                        </button>
+                      ) : (
+                        <a 
+                          className="oc-open-button" 
+                          href={doc.link} 
+                          target="_blank" 
+                          rel="noopener noreferrer"
+                        >
+                          <ExternalLink size={15} />
+                          Open Form
+                        </a>
+                      )}
                     </motion.article>
                   );
                 })
@@ -1242,7 +1484,7 @@ export default function App() {
           </div>
         </section>
 
-        {/* How Do I? Section */}
+        {/* How Do I? Section - Commented out as requested
         <section id="howDoI" ref={sectionRefs.howDoI} className="oc-panel">
           <div className="oc-section-heading">
             <span className="oc-icon" aria-hidden="true">
@@ -1255,7 +1497,7 @@ export default function App() {
           </div>
 
           <div className="flex flex-col gap-3 mt-6">
-            {/* Accordion Item 1: Cash Reallocation */}
+            // Accordion Item 1: Cash Reallocation
             <div className="border border-slate-200 rounded-lg overflow-hidden bg-white shadow-sm">
               <button
                 type="button"
@@ -1343,7 +1585,7 @@ export default function App() {
               </AnimatePresence>
             </div>
 
-            {/* Accordion Item 2: Deposits */}
+            // Accordion Item 2: Deposits
             <div className="border border-slate-200 rounded-lg overflow-hidden bg-white shadow-sm">
               <button
                 type="button"
@@ -1388,7 +1630,7 @@ export default function App() {
               </AnimatePresence>
             </div>
 
-            {/* Accordion Item 3: Paid Outs */}
+            // Accordion Item 3: Paid Outs
             <div className="border border-slate-200 rounded-lg overflow-hidden bg-white shadow-sm">
               <button
                 type="button"
@@ -1434,6 +1676,7 @@ export default function App() {
             </div>
           </div>
         </section>
+        */}
 
         {/* Invoice Submissions and Incident Reports Bottom Grid */}
         <div className="oc-bottom-grid">
@@ -1526,108 +1769,182 @@ export default function App() {
               </div>
             </div>
 
-            {/* Incident Report Guidelines */}
-            <div>
-              <h3 className="text-sm font-bold uppercase tracking-wider text-slate-700 mb-4 flex items-center gap-2 border-b border-slate-200 pb-2">
-                <AlertCircle size={18} className="text-emerald-700" />
-                Incident Report Guidelines
-              </h3>
-              <p className="text-xs text-slate-500 mb-4">Send reports immediately based on target category. Ensure mandatory team CCs.</p>
+            {/* Who To Contact */}
+            <div className="mt-8 pt-6 border-t border-slate-200">
+              <div className="flex items-center gap-2 mb-4">
+                <span className="p-1.5 rounded-lg bg-emerald-50 text-emerald-700 border border-emerald-200 inline-flex items-center justify-center">
+                  <Users size={18} />
+                </span>
+                <h3 className="text-sm font-bold uppercase tracking-wider text-slate-800 m-0">
+                  Who To Contact
+                </h3>
+              </div>
 
-              {/* Modern Contact Cards Directory */}
+              {/* Cards matching the Incident Report Guidelines format */}
               <div className="flex flex-col gap-3 mb-4">
-                <div className="oc-contact-card">
-                  <div className="oc-contact-left">
-                    <span className="oc-contact-badge employee">Employee</span>
+                {/* 1. Payroll Questions */}
+                <div className="oc-contact-card flex-col sm:flex-row items-start sm:items-center gap-3">
+                  <div className="oc-contact-left flex-1">
+                    <span className="oc-contact-badge payroll">Payroll</span>
                     <div className="oc-contact-info">
-                      <h4 className="m-0 text-sm font-semibold text-slate-800">Hani</h4>
-                      <p className="m-0 text-xs text-slate-500">Primary Contact | Select First Insurance</p>
+                      <h4 className="m-0 text-sm font-semibold text-slate-800">Payroll Questions</h4>
+                      <p className="m-0 text-xs text-slate-500">Paycheck discrepancy, direct deposit, tax withholding, garnishments, password resets, ProLiant</p>
                     </div>
                   </div>
-                  <button 
-                    type="button"
-                    onClick={() => handleCopyEmail('Hani@selectfirstinsurance.com')}
-                    className="oc-contact-email-btn"
-                    title="Click to copy email address"
-                  >
-                    <Mail size={14} />
-                    <span className="text-xs">Hani@selectfirstinsurance.com</span>
-                    {copiedEmail === 'Hani@selectfirstinsurance.com' ? (
-                      <Check size={14} className="text-green-600" />
-                    ) : (
-                      <Copy size={12} className="opacity-60" />
-                    )}
-                  </button>
+                  <div className="flex flex-col sm:items-end gap-1.5 w-full sm:w-auto shrink-0">
+                    <button 
+                      type="button"
+                      onClick={() => handleCopyEmail('OFA-PR-ORG@bdo.com')}
+                      className="oc-contact-email-btn w-full sm:w-auto justify-between sm:justify-start"
+                      title="Click to copy email address"
+                    >
+                      <Mail size={14} />
+                      <span className="text-xs font-medium">OFA-PR-ORG@bdo.com</span>
+                      {copiedEmail === 'OFA-PR-ORG@bdo.com' ? (
+                        <Check size={14} className="text-green-600" />
+                      ) : (
+                        <Copy size={12} className="opacity-60" />
+                      )}
+                    </button>
+                    <div className="text-[11px] text-slate-500 flex items-center gap-1">
+                      <span className="font-semibold text-slate-600">Cc HR:</span>
+                      <button 
+                        onClick={() => handleCopyEmail('tmaltese@opportunityrestaurantgroup.com')}
+                        className="text-blue-600 hover:underline cursor-pointer bg-transparent border-none p-0 inline-flex items-center gap-1 text-[11px]"
+                      >
+                        tmaltese@opportunityrestaurantgroup.com
+                        {copiedEmail === 'tmaltese@opportunityrestaurantgroup.com' ? <Check size={11} className="text-green-600" /> : <Copy size={10} className="opacity-60" />}
+                      </button>
+                    </div>
+                  </div>
                 </div>
 
-                <div className="oc-contact-card">
-                  <div className="oc-contact-left">
-                    <span className="oc-contact-badge guest">Guest</span>
+                {/* 2. Workers' Compensation */}
+                <div className="oc-contact-card flex-col sm:flex-row items-start sm:items-center gap-3">
+                  <div className="oc-contact-left flex-1">
+                    <span className="oc-contact-badge wc">Workers' Comp</span>
                     <div className="oc-contact-info">
-                      <h4 className="m-0 text-sm font-semibold text-slate-800">Jim Doran</h4>
-                      <p className="m-0 text-xs text-slate-500">Primary Contact | AJ Gallagher</p>
+                      <h4 className="m-0 text-sm font-semibold text-slate-800">Select First Insurance (WC Team)</h4>
+                      <p className="m-0 text-xs text-slate-500">Work-related injury or illness, incident reporting, WC claim status or documentation</p>
                     </div>
                   </div>
-                  <button 
-                    type="button"
-                    onClick={() => handleCopyEmail('Jim_doran@ajg.com')}
-                    className="oc-contact-email-btn"
-                    title="Click to copy email address"
-                  >
-                    <Mail size={14} />
-                    <span className="text-xs">Jim_doran@ajg.com</span>
-                    {copiedEmail === 'Jim_doran@ajg.com' ? (
-                      <Check size={14} className="text-green-600" />
-                    ) : (
-                      <Copy size={12} className="opacity-60" />
-                    )}
-                  </button>
+                  <div className="flex flex-col sm:items-end gap-1.5 w-full sm:w-auto shrink-0">
+                    <div className="flex flex-col sm:flex-row gap-1.5 w-full sm:w-auto">
+                      <button 
+                        type="button"
+                        onClick={() => handleCopyEmail('hani@selectfirstinsurance.com')}
+                        className="oc-contact-email-btn justify-between sm:justify-start"
+                        title="Click to copy email address"
+                      >
+                        <Mail size={14} />
+                        <span className="text-xs font-medium">Hani — hani@selectfirstinsurance.com</span>
+                        {copiedEmail === 'hani@selectfirstinsurance.com' ? (
+                          <Check size={14} className="text-green-600" />
+                        ) : (
+                          <Copy size={12} className="opacity-60" />
+                        )}
+                      </button>
+                      <button 
+                        type="button"
+                        onClick={() => handleCopyEmail('DSalazar@selectfirstinsurance.com')}
+                        className="oc-contact-email-btn justify-between sm:justify-start"
+                        title="Click to copy email address"
+                      >
+                        <Mail size={14} />
+                        <span className="text-xs font-medium">Daniel Salazar — DSalazar@selectfirstinsurance.com</span>
+                        {copiedEmail === 'DSalazar@selectfirstinsurance.com' ? (
+                          <Check size={14} className="text-green-600" />
+                        ) : (
+                          <Copy size={12} className="opacity-60" />
+                        )}
+                      </button>
+                    </div>
+                    <div className="text-[11px] text-slate-500 flex items-center gap-1">
+                      <span className="font-semibold text-slate-600">Cc HR:</span>
+                      <button 
+                        onClick={() => handleCopyEmail('tmaltese@opportunityrestaurantgroup.com')}
+                        className="text-blue-600 hover:underline cursor-pointer bg-transparent border-none p-0 inline-flex items-center gap-1 text-[11px]"
+                      >
+                        tmaltese@opportunityrestaurantgroup.com
+                        {copiedEmail === 'tmaltese@opportunityrestaurantgroup.com' ? <Check size={11} className="text-green-600" /> : <Copy size={10} className="opacity-60" />}
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
+                {/* 3. HR Requests */}
+                <div className="oc-contact-card flex-col sm:flex-row items-start sm:items-center gap-3">
+                  <div className="oc-contact-left flex-1">
+                    <span className="oc-contact-badge hr">HR Requests</span>
+                    <div className="oc-contact-info">
+                      <h4 className="m-0 text-sm font-semibold text-slate-800">HR Requests &amp; Inquiries</h4>
+                      <p className="m-0 text-xs text-slate-500">Employee relations concerns, policy questions, handbook questions, and general HR inquiries</p>
+                    </div>
+                  </div>
+                  <div className="flex flex-col sm:items-end gap-1.5 w-full sm:w-auto shrink-0">
+                    <button 
+                      type="button"
+                      onClick={() => handleCopyEmail('tmaltese@opportunityrestaurantgroup.com')}
+                      className="oc-contact-email-btn w-full sm:w-auto justify-between sm:justify-start"
+                      title="Click to copy email address"
+                    >
+                      <Mail size={14} />
+                      <span className="text-xs font-medium">tmaltese@opportunityrestaurantgroup.com</span>
+                      {copiedEmail === 'tmaltese@opportunityrestaurantgroup.com' ? (
+                        <Check size={14} className="text-green-600" />
+                      ) : (
+                        <Copy size={12} className="opacity-60" />
+                      )}
+                    </button>
+                  </div>
+                </div>
+
+                {/* 4. Guest Incident Reports */}
+                <div className="oc-contact-card flex-col sm:flex-row items-start sm:items-center gap-3">
+                  <div className="oc-contact-left flex-1">
+                    <span className="oc-contact-badge guest">Guest Reports</span>
+                    <div className="oc-contact-info">
+                      <h4 className="m-0 text-sm font-semibold text-slate-800">Jim Doran (EPL Team)</h4>
+                      <p className="m-0 text-xs text-slate-500">Guest/customer incidents, injuries, or accidents on premises — submit completed form</p>
+                    </div>
+                  </div>
+                  <div className="flex flex-col sm:items-end gap-1.5 w-full sm:w-auto shrink-0">
+                    <button 
+                      type="button"
+                      onClick={() => handleCopyEmail('Jim_doran@ajg.com')}
+                      className="oc-contact-email-btn w-full sm:w-auto justify-between sm:justify-start"
+                      title="Click to copy email address"
+                    >
+                      <Mail size={14} />
+                      <span className="text-xs font-medium">Jim_doran@ajg.com</span>
+                      {copiedEmail === 'Jim_doran@ajg.com' ? (
+                        <Check size={14} className="text-green-600" />
+                      ) : (
+                        <Copy size={12} className="opacity-60" />
+                      )}
+                    </button>
+                    <div className="text-[11px] text-slate-500 flex items-center gap-1.5 flex-wrap">
+                      <span className="font-semibold text-slate-600">Cc:</span>
+                      <button 
+                        onClick={() => handleCopyEmail('tmaltese@opportunityrestaurantgroup.com')}
+                        className="text-blue-600 hover:underline cursor-pointer bg-transparent border-none p-0 inline-flex items-center gap-1 text-[11px]"
+                      >
+                        HR (tmaltese)
+                        {copiedEmail === 'tmaltese@opportunityrestaurantgroup.com' ? <Check size={11} className="text-green-600" /> : <Copy size={10} className="opacity-60" />}
+                      </button>
+                      <span className="text-slate-300">&bull;</span>
+                      <span className="text-slate-600 font-medium">District Manager</span>
+                    </div>
+                  </div>
                 </div>
               </div>
 
-              {/* Sleek CC Container Block */}
-              <div className="oc-cc-container">
-                <div className="oc-cc-title">Always CC the Following on All Incident Reports</div>
-                <div className="oc-cc-list">
-                  <div 
-                    className="oc-cc-item" 
-                    onClick={() => handleCopyEmail('bclark@opportunityrestaurantgroup.com')}
-                    title="Click to copy email address"
-                  >
-                    <span>bclark@opportunityrestaurantgroup.com</span>
-                    {copiedEmail === 'bclark@opportunityrestaurantgroup.com' ? (
-                      <span className="text-green-600 flex items-center gap-1 text-xs font-bold"><Check size={14} /> Copied!</span>
-                    ) : (
-                      <span className="text-slate-400 flex items-center gap-1 text-xs"><Copy size={12} /> Copy</span>
-                    )}
-                  </div>
-
-                  <div 
-                    className="oc-cc-item" 
-                    onClick={() => handleCopyEmail('TFurr@opportunityrestaurantgroup.com')}
-                    title="Click to copy email address"
-                  >
-                    <span>TFurr@opportunityrestaurantgroup.com</span>
-                    {copiedEmail === 'TFurr@opportunityrestaurantgroup.com' ? (
-                      <span className="text-green-600 flex items-center gap-1 text-xs font-bold"><Check size={14} /> Copied!</span>
-                    ) : (
-                      <span className="text-slate-400 flex items-center gap-1 text-xs"><Copy size={12} /> Copy</span>
-                    )}
-                  </div>
-
-                  <div 
-                    className="oc-cc-item" 
-                    onClick={() => handleCopyEmail('Jdragoljevic@opportunityrestaurantgroup.com')}
-                    title="Click to copy email address"
-                  >
-                    <span>Jdragoljevic@opportunityrestaurantgroup.com</span>
-                    {copiedEmail === 'Jdragoljevic@opportunityrestaurantgroup.com' ? (
-                      <span className="text-green-600 flex items-center gap-1 text-xs font-bold"><Check size={14} /> Copied!</span>
-                    ) : (
-                      <span className="text-slate-400 flex items-center gap-1 text-xs"><Copy size={12} /> Copy</span>
-                    )}
-                  </div>
-                </div>
+              {/* Note at bottom */}
+              <div className="p-3 bg-slate-50 rounded-lg border border-slate-200 flex items-start gap-2.5 text-xs text-slate-600 italic">
+                <Info size={16} className="text-emerald-700 shrink-0 mt-0.5 not-italic" />
+                <span>
+                  <strong>Note:</strong> Use the contact above for the topic of your email. If your question spans more than one topic, include all relevant contacts.
+                </span>
               </div>
             </div>
           </section>
@@ -1691,10 +2008,203 @@ export default function App() {
               className="oc-toast"
             >
               <Check size={16} className="text-emerald-400" />
-              <span>Copied email to clipboard!</span>
+              <span>Copied to clipboard!</span>
             </motion.div>
           )}
         </AnimatePresence>
+
+        {/* Multi-State Workers' Compensation Modal Dialog */}
+        <AnimatePresence>
+          {workersCompModalOpen && (
+            <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+              {/* Backdrop */}
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                onClick={() => setWorkersCompModalOpen(false)}
+                className="fixed inset-0 bg-slate-900/60 backdrop-blur-xs"
+              />
+
+              {/* Modal Dialog Card */}
+              <motion.div
+                initial={{ opacity: 0, scale: 0.95, y: 15 }}
+                animate={{ opacity: 1, scale: 1, y: 0 }}
+                exit={{ opacity: 0, scale: 0.95, y: 15 }}
+                transition={{ duration: 0.2, ease: 'easeOut' }}
+                className="relative w-full max-w-lg bg-white rounded-2xl shadow-2xl border border-slate-200 overflow-hidden z-10 flex flex-col max-h-[90vh]"
+              >
+                {/* Modal Header */}
+                <div className="flex items-start justify-between p-5 border-b border-slate-100 bg-slate-50/70">
+                  <div className="pr-4">
+                    <div className="flex items-center gap-2 mb-1">
+                      <span className="text-[11px] font-bold uppercase tracking-wider text-emerald-800 bg-emerald-50 border border-emerald-200/80 px-2 py-0.5 rounded">
+                        Multi-State Form
+                      </span>
+                      <span className="text-[11px] font-medium text-slate-500">
+                        {WORKERS_COMP_VARIANTS.length} State Markets
+                      </span>
+                    </div>
+                    <h3 className="text-lg font-bold text-slate-900 m-0">Worker&apos;s Compensation Documents</h3>
+                    <p className="text-xs text-slate-600 mt-1 m-0">
+                      Please use the appropriate state-specific form for your market when reporting a workplace injury.
+                    </p>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => setWorkersCompModalOpen(false)}
+                    className="p-1.5 rounded-lg text-slate-400 hover:text-slate-700 hover:bg-slate-200/60 transition-colors cursor-pointer border-none bg-transparent"
+                    title="Close popup"
+                  >
+                    <X size={18} />
+                  </button>
+                </div>
+
+                {/* Modal Body */}
+                <div className="p-5 space-y-4 overflow-y-auto">
+                  {/* State Market Selector */}
+                  <div className="p-3.5 bg-slate-50 border border-slate-200/90 rounded-xl">
+                    <div className="flex items-center justify-between gap-1 mb-2.5">
+                      <span className="text-[11px] font-bold uppercase tracking-wider text-slate-700 flex items-center gap-1.5">
+                        <MapPin size={14} className="text-emerald-700" />
+                        Select Your State Market:
+                      </span>
+                      <span className="text-xs font-bold text-emerald-800 bg-emerald-100/80 border border-emerald-300 px-2.5 py-0.5 rounded-md">
+                        {WORKERS_COMP_VARIANTS[selectedStateIndex]?.state} ({WORKERS_COMP_VARIANTS[selectedStateIndex]?.abbr})
+                      </span>
+                    </div>
+                    <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+                      {WORKERS_COMP_VARIANTS.map((variant, vIdx) => {
+                        const isSelected = vIdx === selectedStateIndex;
+                        return (
+                          <button
+                            key={variant.abbr}
+                            type="button"
+                            onClick={() => setSelectedStateIndex(vIdx)}
+                            className={`py-2 px-2.5 rounded-lg text-xs font-semibold flex items-center justify-center gap-1.5 transition-all cursor-pointer ${
+                              isSelected
+                                ? 'bg-emerald-700 text-white shadow-sm font-bold border border-emerald-800'
+                                : 'bg-white text-slate-700 hover:bg-slate-100 border border-slate-200 hover:border-slate-300'
+                            }`}
+                          >
+                            <span className={`text-[10.5px] uppercase font-mono font-bold ${isSelected ? 'text-emerald-100' : 'text-slate-400'}`}>
+                              {variant.abbr}
+                            </span>
+                            <span className="truncate">{variant.state}</span>
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </div>
+
+                  {/* Direct SharePoint Button for active state */}
+                  {WORKERS_COMP_VARIANTS[selectedStateIndex]?.link && (
+                    <div>
+                      <a
+                        href={WORKERS_COMP_VARIANTS[selectedStateIndex].link}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="w-full py-2.5 px-4 bg-emerald-700 hover:bg-emerald-800 text-white rounded-xl font-semibold text-xs inline-flex items-center justify-center gap-2 shadow-xs transition-colors cursor-pointer text-decoration-none"
+                      >
+                        <span>Open {WORKERS_COMP_VARIANTS[selectedStateIndex].state} Form in SharePoint</span>
+                        <ExternalLink size={14} />
+                      </a>
+                    </div>
+                  )}
+
+                  {/* Mandatory 24-Hour Submission Notice & Contacts */}
+                  <div className="p-3.5 rounded-xl bg-emerald-50/60 border border-emerald-200 text-xs space-y-2.5">
+                    <div className="flex items-center gap-1.5 font-bold text-emerald-950">
+                      <AlertTriangle size={15} className="text-emerald-700 shrink-0" />
+                      <span>Mandatory 24-Hour Submission</span>
+                    </div>
+                    <p className="text-[11.5px] text-slate-600 leading-relaxed m-0">
+                      Submit completed report within 24 hours of incident to all 3 designated recipients:
+                    </p>
+                    <div className="space-y-1.5">
+                      {WORKERS_COMP_CONTACTS.map((contact) => (
+                        <div
+                          key={contact.email}
+                          className="flex items-center justify-between py-1.5 px-2.5 rounded-lg bg-white border border-emerald-100 text-[11px]"
+                        >
+                          <span className="font-semibold text-slate-800">{contact.name}</span>
+                          <button
+                            type="button"
+                            onClick={() => handleCopyText(contact.email)}
+                            className="text-emerald-800 hover:text-emerald-950 font-mono text-[10.5px] flex items-center gap-1 hover:underline cursor-pointer bg-transparent border-none p-0"
+                            title="Click to copy email address"
+                          >
+                            <span>{contact.email}</span>
+                            {copiedEmail === contact.email ? (
+                              <Check size={11} className="text-emerald-600" />
+                            ) : (
+                              <Copy size={11} className="opacity-60" />
+                            )}
+                          </button>
+                        </div>
+                      ))}
+                    </div>
+                    <div className="flex items-center gap-2 pt-1 border-t border-emerald-200/70">
+                      <a
+                        href={`mailto:${WORKERS_COMP_CONTACTS.map(c => c.email).join(',')}?subject=Workers%20Compensation%20Injury%20Report%20-%20[Store%20Number]&body=Hello,%0D%0A%0D%0APlease%20find%20attached%20the%20state-specific%20workers%20compensation%20report%20for%20our%20store.%0D%0A%0D%0AStore%20Number:%20%0D%0AState%20Market:%20${encodeURIComponent(WORKERS_COMP_VARIANTS[selectedStateIndex]?.state || '')}%0D%0AEmployee%20Name:%20%0D%0ADate%20of%20Injury:%20%0D%0A%0D%0AThank%20you.`}
+                        className="flex-1 py-2 px-3 bg-emerald-700 hover:bg-emerald-800 text-white rounded-lg text-xs font-semibold inline-flex items-center justify-center gap-1.5 transition-colors cursor-pointer text-decoration-none"
+                      >
+                        <Mail size={13} />
+                        <span>Email All 3 Contacts</span>
+                      </a>
+                      <button
+                        type="button"
+                        onClick={() => handleCopyText(WORKERS_COMP_CONTACTS.map(c => c.email).join(', '), true)}
+                        className="py-2 px-3 bg-white hover:bg-emerald-50 text-emerald-900 border border-emerald-300 rounded-lg text-xs font-semibold inline-flex items-center justify-center gap-1 transition-colors cursor-pointer"
+                      >
+                        {copiedAll ? <Check size={13} className="text-emerald-600" /> : <Copy size={13} className="text-emerald-700" />}
+                        <span>{copiedAll ? 'Copied!' : 'Copy All'}</span>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Modal Footer */}
+                <div className="p-3 px-5 bg-slate-50 border-t border-slate-100 flex items-center justify-end">
+                  <button
+                    type="button"
+                    onClick={() => setWorkersCompModalOpen(false)}
+                    className="py-1.5 px-4 bg-slate-200 hover:bg-slate-300 text-slate-800 rounded-lg text-xs font-semibold transition-colors cursor-pointer border-none"
+                  >
+                    Close
+                  </button>
+                </div>
+              </motion.div>
+            </div>
+          )}
+        </AnimatePresence>
+
+        {/* Floating Syrup Launcher Button & Assistant Modal temporarily commented out for launch:
+        {!chatbotOpen && (
+          <button
+            type="button"
+            onClick={() => setChatbotOpen(true)}
+            className="fixed bottom-6 right-6 z-40 bg-emerald-800 hover:bg-emerald-900 text-white py-2.5 px-4 rounded-full shadow-lg flex items-center gap-2.5 font-bold text-xs border border-emerald-600/80 cursor-pointer transition-all hover:scale-105 active:scale-95"
+            title="Ask Syrup"
+          >
+            <div className="relative flex items-center justify-center">
+              <SyrupAvatar size={26} />
+              <span className="absolute -top-0.5 -right-0.5 w-2 h-2 bg-amber-400 rounded-full animate-ping" />
+              <span className="absolute -top-0.5 -right-0.5 w-2 h-2 bg-amber-400 rounded-full" />
+            </div>
+            <span className="text-sm font-bold text-emerald-50">Ask Syrup</span>
+          </button>
+        )}
+
+        <OpsChatbot
+          isOpen={chatbotOpen}
+          onClose={() => setChatbotOpen(false)}
+          onOpenStateModal={() => {
+            setChatbotOpen(false);
+            setWorkersCompModalOpen(true);
+          }}
+        />
+        */}
       </main>
     </>
   );
