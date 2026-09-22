@@ -42,7 +42,12 @@ import {
   X,
   HeartHandshake,
   Bot,
-  MessageSquare
+  MessageSquare,
+  Receipt,
+  CreditCard,
+  DollarSign,
+  Clock,
+  AlertOctagon
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { OpsChatbot } from './components/OpsChatbot';
@@ -819,6 +824,7 @@ export default function App() {
 
         .oc-bottom-grid .oc-panel {
           width: 100%;
+          min-width: 0;
           margin: 0 0 32px;
         }
 
@@ -937,6 +943,9 @@ export default function App() {
           border-radius: 8px;
           background-color: #ffffff;
           transition: all 0.2s ease;
+          overflow: hidden;
+          width: 100%;
+          box-sizing: border-box;
         }
 
         .oc-contact-card:hover {
@@ -948,6 +957,29 @@ export default function App() {
           display: flex;
           align-items: center;
           gap: 16px;
+          min-width: 0;
+        }
+
+        .oc-contact-right {
+          display: flex;
+          flex-direction: column;
+          align-items: flex-end;
+          gap: 6px;
+          min-width: 0;
+          max-width: 100%;
+        }
+
+        @media (max-width: 900px) {
+          .oc-contact-card {
+            flex-direction: column !important;
+            align-items: stretch !important;
+            gap: 12px !important;
+          }
+
+          .oc-contact-right {
+            align-items: flex-start !important;
+            width: 100% !important;
+          }
         }
 
         .oc-contact-badge {
@@ -962,6 +994,7 @@ export default function App() {
           text-transform: uppercase;
           min-width: 84px;
           text-align: center;
+          flex-shrink: 0;
         }
 
         .oc-contact-badge.employee {
@@ -1008,7 +1041,7 @@ export default function App() {
         }
 
         .oc-contact-email-btn {
-          display: flex;
+          display: inline-flex;
           align-items: center;
           gap: 8px;
           padding: 6px 12px;
@@ -1020,6 +1053,14 @@ export default function App() {
           font-weight: 600;
           cursor: pointer;
           transition: all 0.2s ease;
+          max-width: 100%;
+          box-sizing: border-box;
+        }
+
+        .oc-contact-email-btn span {
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
         }
 
         .oc-contact-email-btn:hover {
@@ -1679,318 +1720,412 @@ export default function App() {
         */}
 
         {/* Invoice Submissions and Incident Reports Bottom Grid */}
-        <div className="oc-bottom-grid">
-          {/* Financial & Incident Who to Contact Combined Section */}
-          <section id="contacts" ref={sectionRefs.contacts} className="oc-panel">
-            <div className="oc-section-heading">
-              <span className="oc-icon" aria-hidden="true">
-                <Users size={20} className="text-emerald-700" />
-              </span>
-              <div>
-                <h2>Who to Contact &amp; Submissions</h2>
-                <p>Rules and contact directory for financial filings and incident reports.</p>
-              </div>
+        {/* Who to Contact & Submissions Section */}
+        <section id="contacts" ref={sectionRefs.contacts} className="oc-panel">
+          <div className="oc-section-heading">
+            <span className="oc-icon" aria-hidden="true">
+              <Users size={20} className="text-emerald-700" />
+            </span>
+            <div>
+              <h2>Who to Contact &amp; Submissions</h2>
+              <p>Rules and contact directory for financial filings, guest incident reports, and general store inquiries.</p>
             </div>
+          </div>
 
-            {/* Financial & Invoice Submissions */}
-            <div className="mb-8">
-              <h3 className="text-sm font-bold uppercase tracking-wider text-slate-700 mb-4 flex items-center gap-2 border-b border-slate-200 pb-2">
-                <FileCode size={18} className="text-emerald-700" />
-                Financial &amp; Invoice Submissions
-              </h3>
-              
-              <aside className="oc-warning">
-                <strong>
-                  <AlertTriangle size={18} />
-                  CRITICAL FINANCIAL SEPARATION RULE
-                </strong>
-                <p><b>Paid Outs are NOT invoices.</b> Do NOT combine AP invoices with POS Paid Out reports. Submit each item separately to the appropriate email address listed below.</p>
-              </aside>
+          {/* Financial & Invoice Submissions Sub-heading */}
+          <div className="mb-6">
+            <h3 className="text-sm font-bold uppercase tracking-wider text-slate-700 mb-3 flex items-center gap-2 border-b border-slate-200 pb-2">
+              <FileCode size={18} className="text-emerald-700" />
+              Financial &amp; Invoice Submissions
+            </h3>
+            
+            <aside className="oc-warning">
+              <strong>
+                <AlertTriangle size={18} />
+                CRITICAL FINANCIAL SEPARATION RULE
+              </strong>
+              <p><b>Paid Outs are NOT invoices.</b> Do NOT combine AP invoices with POS Paid Out reports. Submit each item separately to the appropriate email address listed below.</p>
+            </aside>
+          </div>
 
-              <div className="oc-table-container">
-                <table className="oc-table">
-                  <thead>
-                    <tr>
-                      <th>Document Category</th>
-                      <th>Submit To Email (Click to Copy)</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td>
-                        <span className="oc-badge paid">POS PAID OUTS</span>
-                        <div className="text-[11px] text-slate-500 mt-1">Already Posted in the POS. Send all supporting documentation.</div>
-                      </td>
-                      <td className="oc-bold-cell">
-                        <button 
-                          onClick={() => handleCopyEmail('OFA-FPORG@bdo.com')}
-                          className="flex items-center gap-1.5 text-blue-600 hover:text-blue-800 hover:underline bg-transparent border-none font-bold cursor-pointer text-left p-0"
-                        >
-                          <Mail size={15} className="text-blue-500 shrink-0" />
-                          OFA-FPORG@bdo.com
-                          {copiedEmail === 'OFA-FPORG@bdo.com' ? <Check size={14} className="text-green-600 ml-1 shrink-0" /> : <Copy size={13} className="text-slate-400 opacity-60 ml-1 shrink-0" />}
-                        </button>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>
-                        <span className="oc-badge invoice">AP INVOICES</span>
-                        <div className="text-[11px] text-slate-500 mt-1">Accounts Payable. Send all vendor invoices requiring payment.</div>
-                      </td>
-                      <td className="oc-bold-cell">
-                        <button 
-                          onClick={() => handleCopyEmail('OFA-AP-ORG@bdo.com')}
-                          className="flex items-center gap-1.5 text-blue-600 hover:text-blue-800 hover:underline bg-transparent border-none font-bold cursor-pointer text-left p-0"
-                        >
-                          <Mail size={15} className="text-blue-500 shrink-0" />
-                          OFA-AP-ORG@bdo.com
-                          {copiedEmail === 'OFA-AP-ORG@bdo.com' ? <Check size={14} className="text-green-600 ml-1 shrink-0" /> : <Copy size={13} className="text-slate-400 opacity-60 ml-1 shrink-0" />}
-                        </button>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>
-                        <span className="oc-badge payroll">PAYROLL</span>
-                        <div className="text-[11px] text-slate-500 mt-1">Payroll inquiries, adjustments, and documentation.</div>
-                      </td>
-                      <td className="oc-bold-cell">
-                        <button 
-                          onClick={() => handleCopyEmail('OFA-PR-ORG@bdo.com')}
-                          className="flex items-center gap-1.5 text-blue-600 hover:text-blue-800 hover:underline bg-transparent border-none font-bold cursor-pointer text-left p-0"
-                        >
-                          <Mail size={15} className="text-blue-500 shrink-0" />
-                          OFA-PR-ORG@bdo.com
-                          {copiedEmail === 'OFA-PR-ORG@bdo.com' ? <Check size={14} className="text-green-600 ml-1 shrink-0" /> : <Copy size={13} className="text-slate-400 opacity-60 ml-1 shrink-0" />}
-                        </button>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
+          {/* Financial Cards Grid */}
+          <div className="oc-card-grid mb-10">
+            {/* POS Paid Outs Card */}
+            <article className="oc-doc-card card-orange">
+              <div className="oc-card-header-row">
+                <div className="oc-card-icon-wrapper orange">
+                  <Receipt size={20} className="stroke-[2.5]" />
+                </div>
+                <span className="oc-card-format-badge">SUBMISSION</span>
               </div>
-            </div>
-
-            {/* Who To Contact */}
-            <div className="mt-8 pt-6 border-t border-slate-200">
-              <div className="flex items-center gap-2 mb-4">
-                <span className="p-1.5 rounded-lg bg-emerald-50 text-emerald-700 border border-emerald-200 inline-flex items-center justify-center">
-                  <Users size={18} />
-                </span>
-                <h3 className="text-sm font-bold uppercase tracking-wider text-slate-800 m-0">
-                  Who To Contact
-                </h3>
+              <div className="oc-card-title-container mb-2">
+                <h3>POS Paid Outs</h3>
               </div>
+              <p className="oc-card-description">
+                Already posted in the POS. Send all receipts and supporting documentation for posted store paid outs.
+              </p>
+              <div className="mt-auto pt-3 border-t border-slate-100 flex flex-col gap-2">
+                <div className="text-[11px] font-bold uppercase tracking-wider text-slate-500">Submit To Email:</div>
+                <button
+                  type="button"
+                  onClick={() => handleCopyEmail('OFA-FPORG@bdo.com')}
+                  className="oc-contact-email-btn"
+                  title="Click to copy email address"
+                >
+                  <Mail size={15} className="shrink-0 text-blue-500" />
+                  <span>OFA-FPORG@bdo.com</span>
+                  {copiedEmail === 'OFA-FPORG@bdo.com' ? (
+                    <Check size={14} className="text-green-600 shrink-0 ml-auto" />
+                  ) : (
+                    <Copy size={13} className="text-slate-400 opacity-60 shrink-0 ml-auto" />
+                  )}
+                </button>
+              </div>
+            </article>
 
-              {/* Cards matching the Incident Report Guidelines format */}
-              <div className="flex flex-col gap-3 mb-4">
-                {/* 1. Payroll Questions */}
-                <div className="oc-contact-card flex-col sm:flex-row items-start sm:items-center gap-3">
-                  <div className="oc-contact-left flex-1">
-                    <span className="oc-contact-badge payroll">Payroll</span>
-                    <div className="oc-contact-info">
-                      <h4 className="m-0 text-sm font-semibold text-slate-800">Payroll Questions</h4>
-                      <p className="m-0 text-xs text-slate-500">Paycheck discrepancy, direct deposit, tax withholding, garnishments, password resets, ProLiant</p>
-                    </div>
-                  </div>
-                  <div className="flex flex-col sm:items-end gap-1.5 w-full sm:w-auto shrink-0">
-                    <button 
+            {/* AP Invoices Card */}
+            <article className="oc-doc-card card-purple">
+              <div className="oc-card-header-row">
+                <div className="oc-card-icon-wrapper purple">
+                  <CreditCard size={20} className="stroke-[2.5]" />
+                </div>
+                <span className="oc-card-format-badge">SUBMISSION</span>
+              </div>
+              <div className="oc-card-title-container mb-2">
+                <h3>AP Invoices</h3>
+              </div>
+              <p className="oc-card-description">
+                Accounts Payable. Send all vendor invoices, food &amp; supply statements requiring company payment.
+              </p>
+              <div className="mt-auto pt-3 border-t border-slate-100 flex flex-col gap-2">
+                <div className="text-[11px] font-bold uppercase tracking-wider text-slate-500">Submit To Email:</div>
+                <button
+                  type="button"
+                  onClick={() => handleCopyEmail('OFA-AP-ORG@bdo.com')}
+                  className="oc-contact-email-btn"
+                  title="Click to copy email address"
+                >
+                  <Mail size={15} className="shrink-0 text-blue-500" />
+                  <span>OFA-AP-ORG@bdo.com</span>
+                  {copiedEmail === 'OFA-AP-ORG@bdo.com' ? (
+                    <Check size={14} className="text-green-600 shrink-0 ml-auto" />
+                  ) : (
+                    <Copy size={13} className="text-slate-400 opacity-60 shrink-0 ml-auto" />
+                  )}
+                </button>
+              </div>
+            </article>
+
+            {/* Payroll Documentation Card */}
+            <article className="oc-doc-card card-blue">
+              <div className="oc-card-header-row">
+                <div className="oc-card-icon-wrapper blue">
+                  <DollarSign size={20} className="stroke-[2.5]" />
+                </div>
+                <span className="oc-card-format-badge">SUBMISSION</span>
+              </div>
+              <div className="oc-card-title-container mb-2">
+                <h3>Payroll Submissions</h3>
+              </div>
+              <p className="oc-card-description">
+                Payroll inquiries, tip/hours adjustments, payroll documentation, and timesheet corrections.
+              </p>
+              <div className="mt-auto pt-3 border-t border-slate-100 flex flex-col gap-2">
+                <div className="text-[11px] font-bold uppercase tracking-wider text-slate-500">Submit To Email:</div>
+                <button
+                  type="button"
+                  onClick={() => handleCopyEmail('OFA-PR-ORG@bdo.com')}
+                  className="oc-contact-email-btn"
+                  title="Click to copy email address"
+                >
+                  <Mail size={15} className="shrink-0 text-blue-500" />
+                  <span>OFA-PR-ORG@bdo.com</span>
+                  {copiedEmail === 'OFA-PR-ORG@bdo.com' ? (
+                    <Check size={14} className="text-green-600 shrink-0 ml-auto" />
+                  ) : (
+                    <Copy size={13} className="text-slate-400 opacity-60 shrink-0 ml-auto" />
+                  )}
+                </button>
+              </div>
+            </article>
+          </div>
+
+          {/* Operational & Support Contacts Sub-heading */}
+          <div className="mb-6 pt-6 border-t border-slate-200">
+            <h3 className="text-sm font-bold uppercase tracking-wider text-slate-700 mb-2 flex items-center gap-2">
+              <Users size={18} className="text-emerald-700" />
+              Operational &amp; Support Contact Directory
+            </h3>
+            <p className="text-xs text-slate-500 m-0">
+              Reach out directly to designated department leads and insurance administrators for store matters.
+            </p>
+          </div>
+
+          {/* Directory Cards Grid */}
+          <div className="oc-card-grid mb-6">
+            {/* 1. Payroll Inquiries Card */}
+            <article className="oc-doc-card card-blue">
+              <div className="oc-card-header-row">
+                <div className="oc-card-icon-wrapper blue">
+                  <Clock size={20} className="stroke-[2.5]" />
+                </div>
+                <span className="oc-card-format-badge">PAYROLL</span>
+              </div>
+              <div className="oc-card-title-container mb-2">
+                <h3>Payroll Questions</h3>
+              </div>
+              <p className="oc-card-description">
+                Paycheck discrepancies, direct deposit setup, tax withholding, garnishments, password resets, and ProLiant access.
+              </p>
+              <div className="mt-auto pt-3 border-t border-slate-100 flex flex-col gap-2.5">
+                <div>
+                  <div className="text-[11px] font-bold uppercase tracking-wider text-slate-500 mb-1">Primary Contact:</div>
+                  <button
+                    type="button"
+                    onClick={() => handleCopyEmail('OFA-PR-ORG@bdo.com')}
+                    className="oc-contact-email-btn w-full"
+                    title="Click to copy email address"
+                  >
+                    <Mail size={14} className="shrink-0 text-blue-500" />
+                    <span>OFA-PR-ORG@bdo.com</span>
+                    {copiedEmail === 'OFA-PR-ORG@bdo.com' ? (
+                      <Check size={14} className="text-green-600 shrink-0 ml-auto" />
+                    ) : (
+                      <Copy size={12} className="text-slate-400 opacity-60 shrink-0 ml-auto" />
+                    )}
+                  </button>
+                </div>
+                <div className="text-[11px] text-slate-600 bg-slate-50 p-2 rounded border border-slate-200/70 flex items-center justify-between">
+                  <span className="font-semibold text-slate-500">Cc HR:</span>
+                  <button
+                    type="button"
+                    onClick={() => handleCopyEmail('tmaltese@opportunityrestaurantgroup.com')}
+                    className="text-blue-600 hover:underline inline-flex items-center gap-1 font-medium bg-transparent border-none p-0 cursor-pointer text-[11px]"
+                    title="Click to copy HR email"
+                  >
+                    <span>tmaltese@opportunityrestaurantgroup.com</span>
+                    {copiedEmail === 'tmaltese@opportunityrestaurantgroup.com' ? (
+                      <Check size={11} className="text-green-600 shrink-0" />
+                    ) : (
+                      <Copy size={10} className="text-slate-400 opacity-60 shrink-0" />
+                    )}
+                  </button>
+                </div>
+              </div>
+            </article>
+
+            {/* 2. Workers' Compensation Card */}
+            <article className="oc-doc-card card-green">
+              <div className="oc-card-header-row">
+                <div className="oc-card-icon-wrapper green">
+                  <ShieldCheck size={20} className="stroke-[2.5]" />
+                </div>
+                <span className="oc-card-format-badge">WORKERS' COMP</span>
+              </div>
+              <div className="oc-card-title-container mb-2">
+                <h3>Select First Insurance</h3>
+              </div>
+              <p className="oc-card-description">
+                Work-related injury or illness, incident reporting, claim status, clinic authorizations, or WC documentation.
+              </p>
+              <div className="mt-auto pt-3 border-t border-slate-100 flex flex-col gap-2.5">
+                <div>
+                  <div className="text-[11px] font-bold uppercase tracking-wider text-slate-500 mb-1">Primary Contacts:</div>
+                  <div className="flex flex-col gap-1.5">
+                    <button
                       type="button"
-                      onClick={() => handleCopyEmail('OFA-PR-ORG@bdo.com')}
-                      className="oc-contact-email-btn w-full sm:w-auto justify-between sm:justify-start"
+                      onClick={() => handleCopyEmail('hani@selectfirstinsurance.com')}
+                      className="oc-contact-email-btn w-full"
                       title="Click to copy email address"
                     >
-                      <Mail size={14} />
-                      <span className="text-xs font-medium">OFA-PR-ORG@bdo.com</span>
-                      {copiedEmail === 'OFA-PR-ORG@bdo.com' ? (
-                        <Check size={14} className="text-green-600" />
+                      <Mail size={14} className="shrink-0 text-blue-500" />
+                      <span>Hani: hani@selectfirstinsurance.com</span>
+                      {copiedEmail === 'hani@selectfirstinsurance.com' ? (
+                        <Check size={14} className="text-green-600 shrink-0 ml-auto" />
                       ) : (
-                        <Copy size={12} className="opacity-60" />
+                        <Copy size={12} className="text-slate-400 opacity-60 shrink-0 ml-auto" />
                       )}
                     </button>
-                    <div className="text-[11px] text-slate-500 flex items-center gap-1">
-                      <span className="font-semibold text-slate-600">Cc HR:</span>
-                      <button 
-                        onClick={() => handleCopyEmail('tmaltese@opportunityrestaurantgroup.com')}
-                        className="text-blue-600 hover:underline cursor-pointer bg-transparent border-none p-0 inline-flex items-center gap-1 text-[11px]"
-                      >
-                        tmaltese@opportunityrestaurantgroup.com
-                        {copiedEmail === 'tmaltese@opportunityrestaurantgroup.com' ? <Check size={11} className="text-green-600" /> : <Copy size={10} className="opacity-60" />}
-                      </button>
-                    </div>
+                    <button
+                      type="button"
+                      onClick={() => handleCopyEmail('DSalazar@selectfirstinsurance.com')}
+                      className="oc-contact-email-btn w-full"
+                      title="Click to copy email address"
+                    >
+                      <Mail size={14} className="shrink-0 text-blue-500" />
+                      <span>Daniel Salazar: DSalazar@selectfirstinsurance.com</span>
+                      {copiedEmail === 'DSalazar@selectfirstinsurance.com' ? (
+                        <Check size={14} className="text-green-600 shrink-0 ml-auto" />
+                      ) : (
+                        <Copy size={12} className="text-slate-400 opacity-60 shrink-0 ml-auto" />
+                      )}
+                    </button>
                   </div>
                 </div>
-
-                {/* 2. Workers' Compensation */}
-                <div className="oc-contact-card flex-col sm:flex-row items-start sm:items-center gap-3">
-                  <div className="oc-contact-left flex-1">
-                    <span className="oc-contact-badge wc">Workers' Comp</span>
-                    <div className="oc-contact-info">
-                      <h4 className="m-0 text-sm font-semibold text-slate-800">Select First Insurance (WC Team)</h4>
-                      <p className="m-0 text-xs text-slate-500">Work-related injury or illness, incident reporting, WC claim status or documentation</p>
-                    </div>
-                  </div>
-                  <div className="flex flex-col sm:items-end gap-1.5 w-full sm:w-auto shrink-0">
-                    <div className="flex flex-col sm:flex-row gap-1.5 w-full sm:w-auto">
-                      <button 
-                        type="button"
-                        onClick={() => handleCopyEmail('hani@selectfirstinsurance.com')}
-                        className="oc-contact-email-btn justify-between sm:justify-start"
-                        title="Click to copy email address"
-                      >
-                        <Mail size={14} />
-                        <span className="text-xs font-medium">Hani — hani@selectfirstinsurance.com</span>
-                        {copiedEmail === 'hani@selectfirstinsurance.com' ? (
-                          <Check size={14} className="text-green-600" />
-                        ) : (
-                          <Copy size={12} className="opacity-60" />
-                        )}
-                      </button>
-                      <button 
-                        type="button"
-                        onClick={() => handleCopyEmail('DSalazar@selectfirstinsurance.com')}
-                        className="oc-contact-email-btn justify-between sm:justify-start"
-                        title="Click to copy email address"
-                      >
-                        <Mail size={14} />
-                        <span className="text-xs font-medium">Daniel Salazar — DSalazar@selectfirstinsurance.com</span>
-                        {copiedEmail === 'DSalazar@selectfirstinsurance.com' ? (
-                          <Check size={14} className="text-green-600" />
-                        ) : (
-                          <Copy size={12} className="opacity-60" />
-                        )}
-                      </button>
-                    </div>
-                    <div className="text-[11px] text-slate-500 flex items-center gap-1">
-                      <span className="font-semibold text-slate-600">Cc HR:</span>
-                      <button 
-                        onClick={() => handleCopyEmail('tmaltese@opportunityrestaurantgroup.com')}
-                        className="text-blue-600 hover:underline cursor-pointer bg-transparent border-none p-0 inline-flex items-center gap-1 text-[11px]"
-                      >
-                        tmaltese@opportunityrestaurantgroup.com
-                        {copiedEmail === 'tmaltese@opportunityrestaurantgroup.com' ? <Check size={11} className="text-green-600" /> : <Copy size={10} className="opacity-60" />}
-                      </button>
-                    </div>
-                  </div>
+                <div className="text-[11px] text-slate-600 bg-slate-50 p-2 rounded border border-slate-200/70 flex items-center justify-between">
+                  <span className="font-semibold text-slate-500">Cc HR:</span>
+                  <button
+                    type="button"
+                    onClick={() => handleCopyEmail('tmaltese@opportunityrestaurantgroup.com')}
+                    className="text-blue-600 hover:underline inline-flex items-center gap-1 font-medium bg-transparent border-none p-0 cursor-pointer text-[11px]"
+                    title="Click to copy HR email"
+                  >
+                    <span>tmaltese@opportunityrestaurantgroup.com</span>
+                    {copiedEmail === 'tmaltese@opportunityrestaurantgroup.com' ? (
+                      <Check size={11} className="text-green-600 shrink-0" />
+                    ) : (
+                      <Copy size={10} className="text-slate-400 opacity-60 shrink-0" />
+                    )}
+                  </button>
                 </div>
+              </div>
+            </article>
 
-                {/* 3. HR Requests */}
-                <div className="oc-contact-card flex-col sm:flex-row items-start sm:items-center gap-3">
-                  <div className="oc-contact-left flex-1">
-                    <span className="oc-contact-badge hr">HR Requests</span>
-                    <div className="oc-contact-info">
-                      <h4 className="m-0 text-sm font-semibold text-slate-800">HR Requests &amp; Inquiries</h4>
-                      <p className="m-0 text-xs text-slate-500">Employee relations concerns, policy questions, handbook questions, and general HR inquiries</p>
-                    </div>
-                  </div>
-                  <div className="flex flex-col sm:items-end gap-1.5 w-full sm:w-auto shrink-0">
-                    <button 
+            {/* 3. HR Inquiries Card */}
+            <article className="oc-doc-card card-purple">
+              <div className="oc-card-header-row">
+                <div className="oc-card-icon-wrapper purple">
+                  <Users size={20} className="stroke-[2.5]" />
+                </div>
+                <span className="oc-card-format-badge">HR SUPPORT</span>
+              </div>
+              <div className="oc-card-title-container mb-2">
+                <h3>HR Requests &amp; Inquiries</h3>
+              </div>
+              <p className="oc-card-description">
+                Employee relations concerns, policy questions, handbook guidance, leaves of absence, and general HR inquiries.
+              </p>
+              <div className="mt-auto pt-3 border-t border-slate-100 flex flex-col gap-2.5">
+                <div>
+                  <div className="text-[11px] font-bold uppercase tracking-wider text-slate-500 mb-1">Primary HR Lead:</div>
+                  <button
+                    type="button"
+                    onClick={() => handleCopyEmail('tmaltese@opportunityrestaurantgroup.com')}
+                    className="oc-contact-email-btn w-full"
+                    title="Click to copy email address"
+                  >
+                    <Mail size={14} className="shrink-0 text-blue-500" />
+                    <span>Taylor Maltese: tmaltese@opportunityrestaurantgroup.com</span>
+                    {copiedEmail === 'tmaltese@opportunityrestaurantgroup.com' ? (
+                      <Check size={14} className="text-green-600 shrink-0 ml-auto" />
+                    ) : (
+                      <Copy size={12} className="text-slate-400 opacity-60 shrink-0 ml-auto" />
+                    )}
+                  </button>
+                </div>
+                <div className="text-[11px] text-slate-400 italic py-1">
+                  Direct submission &bull; No CC required
+                </div>
+              </div>
+            </article>
+
+            {/* 4. Guest Reports Card */}
+            <article className="oc-doc-card card-crimson">
+              <div className="oc-card-header-row">
+                <div className="oc-card-icon-wrapper crimson">
+                  <AlertOctagon size={20} className="stroke-[2.5]" />
+                </div>
+                <span className="oc-card-format-badge">INCIDENTS</span>
+              </div>
+              <div className="oc-card-title-container mb-2">
+                <h3>Guest Incident Reports</h3>
+              </div>
+              <p className="oc-card-description">
+                Guest/customer incidents, slip-and-falls, property damage, or accidents on premises — submit completed form.
+              </p>
+              <div className="mt-auto pt-3 border-t border-slate-100 flex flex-col gap-2.5">
+                <div>
+                  <div className="text-[11px] font-bold uppercase tracking-wider text-slate-500 mb-1">Primary Adjuster:</div>
+                  <button
+                    type="button"
+                    onClick={() => handleCopyEmail('Jim_doran@ajg.com')}
+                    className="oc-contact-email-btn w-full"
+                    title="Click to copy email address"
+                  >
+                    <Mail size={14} className="shrink-0 text-blue-500" />
+                    <span>Jim Doran (EPL): Jim_doran@ajg.com</span>
+                    {copiedEmail === 'Jim_doran@ajg.com' ? (
+                      <Check size={14} className="text-green-600 shrink-0 ml-auto" />
+                    ) : (
+                      <Copy size={12} className="text-slate-400 opacity-60 shrink-0 ml-auto" />
+                    )}
+                  </button>
+                </div>
+                <div className="text-[11px] text-slate-600 bg-slate-50 p-2 rounded border border-slate-200/70 flex flex-col gap-1">
+                  <div className="flex items-center justify-between">
+                    <span className="font-semibold text-slate-500">Cc HR:</span>
+                    <button
                       type="button"
                       onClick={() => handleCopyEmail('tmaltese@opportunityrestaurantgroup.com')}
-                      className="oc-contact-email-btn w-full sm:w-auto justify-between sm:justify-start"
-                      title="Click to copy email address"
+                      className="text-blue-600 hover:underline inline-flex items-center gap-1 font-medium bg-transparent border-none p-0 cursor-pointer text-[11px]"
+                      title="Click to copy HR email"
                     >
-                      <Mail size={14} />
-                      <span className="text-xs font-medium">tmaltese@opportunityrestaurantgroup.com</span>
+                      <span>tmaltese</span>
                       {copiedEmail === 'tmaltese@opportunityrestaurantgroup.com' ? (
-                        <Check size={14} className="text-green-600" />
+                        <Check size={11} className="text-green-600 shrink-0" />
                       ) : (
-                        <Copy size={12} className="opacity-60" />
+                        <Copy size={10} className="text-slate-400 opacity-60 shrink-0" />
                       )}
                     </button>
                   </div>
-                </div>
-
-                {/* 4. Guest Incident Reports */}
-                <div className="oc-contact-card flex-col sm:flex-row items-start sm:items-center gap-3">
-                  <div className="oc-contact-left flex-1">
-                    <span className="oc-contact-badge guest">Guest Reports</span>
-                    <div className="oc-contact-info">
-                      <h4 className="m-0 text-sm font-semibold text-slate-800">Jim Doran (EPL Team)</h4>
-                      <p className="m-0 text-xs text-slate-500">Guest/customer incidents, injuries, or accidents on premises — submit completed form</p>
-                    </div>
-                  </div>
-                  <div className="flex flex-col sm:items-end gap-1.5 w-full sm:w-auto shrink-0">
-                    <button 
-                      type="button"
-                      onClick={() => handleCopyEmail('Jim_doran@ajg.com')}
-                      className="oc-contact-email-btn w-full sm:w-auto justify-between sm:justify-start"
-                      title="Click to copy email address"
-                    >
-                      <Mail size={14} />
-                      <span className="text-xs font-medium">Jim_doran@ajg.com</span>
-                      {copiedEmail === 'Jim_doran@ajg.com' ? (
-                        <Check size={14} className="text-green-600" />
-                      ) : (
-                        <Copy size={12} className="opacity-60" />
-                      )}
-                    </button>
-                    <div className="text-[11px] text-slate-500 flex items-center gap-1.5 flex-wrap">
-                      <span className="font-semibold text-slate-600">Cc:</span>
-                      <button 
-                        onClick={() => handleCopyEmail('tmaltese@opportunityrestaurantgroup.com')}
-                        className="text-blue-600 hover:underline cursor-pointer bg-transparent border-none p-0 inline-flex items-center gap-1 text-[11px]"
-                      >
-                        HR (tmaltese)
-                        {copiedEmail === 'tmaltese@opportunityrestaurantgroup.com' ? <Check size={11} className="text-green-600" /> : <Copy size={10} className="opacity-60" />}
-                      </button>
-                      <span className="text-slate-300">&bull;</span>
-                      <span className="text-slate-600 font-medium">District Manager</span>
-                    </div>
+                  <div className="text-[10px] text-slate-500">
+                    + Always Cc your District Manager
                   </div>
                 </div>
               </div>
+            </article>
+          </div>
 
-              {/* Note at bottom */}
-              <div className="p-3 bg-slate-50 rounded-lg border border-slate-200 flex items-start gap-2.5 text-xs text-slate-600 italic">
-                <Info size={16} className="text-emerald-700 shrink-0 mt-0.5 not-italic" />
-                <span>
-                  <strong>Note:</strong> Use the contact above for the topic of your email. If your question spans more than one topic, include all relevant contacts.
-                </span>
-              </div>
+          {/* Section guidance note */}
+          <div className="p-3.5 bg-slate-50 rounded-lg border border-slate-200 flex items-start gap-2.5 text-xs text-slate-600 italic">
+            <Info size={16} className="text-emerald-700 shrink-0 mt-0.5 not-italic" />
+            <span>
+              <strong>Note:</strong> Use the primary contact above for the topic of your email. If your inquiry spans multiple topics (e.g. employee injury and leave of absence), include all relevant departmental contacts on the thread.
+            </span>
+          </div>
+        </section>
+
+        {/* Useful Links & Tools Section */}
+        <section id="links" ref={sectionRefs.links} className="oc-panel">
+          <div className="oc-section-heading">
+            <span className="oc-icon" aria-hidden="true">
+              <ExternalLink size={20} className="text-emerald-700" />
+            </span>
+            <div>
+              <h2>Useful Links &amp; Tools</h2>
+              <p>Quick access to internal helper apps, calculators, and operational resource platforms.</p>
             </div>
-          </section>
+          </div>
 
-          {/* Useful Links & Tools Panel */}
-          <section id="links" ref={sectionRefs.links} className="oc-panel">
-            <div className="oc-section-heading">
-              <span className="oc-icon" aria-hidden="true">
-                <ExternalLink size={20} className="text-emerald-700" />
-              </span>
-              <div>
-                <h2>Useful Links &amp; Tools</h2>
-                <p>Quick access to internal helper apps, calculators, and external resource platforms.</p>
-              </div>
-            </div>
-
-            <div className="oc-card-grid" style={{ gridTemplateColumns: '1fr' }}>
-              <article className="oc-doc-card card-forest">
-                <div className="oc-card-header-row">
-                  <div className="oc-card-icon-wrapper forest">
-                    <Sparkles size={20} className="stroke-[2.5]" />
-                  </div>
-                  <span className="oc-card-format-badge">TOOL</span>
+          <div className="oc-card-grid">
+            <article className="oc-doc-card card-forest">
+              <div className="oc-card-header-row">
+                <div className="oc-card-icon-wrapper forest">
+                  <Sparkles size={20} className="stroke-[2.5]" />
                 </div>
-                <div className="oc-card-title-container mb-2">
-                  <h3 className="flex items-center gap-2">
-                    Catering Calculator
-                    <ArrowUpRight size={16} className="text-emerald-600 shrink-0" />
-                  </h3>
-                </div>
-                <p className="oc-card-description">
-                  Our official calculator for streamlining catering quotes, portion sizes, and customized pricing setup.
-                </p>
-                <a 
-                  href="https://cateringcalculator.streamlit.app" 
-                  target="_blank" 
-                  rel="noopener noreferrer" 
-                  className="oc-open-button"
-                >
-                  Launch Calculator
-                  <ExternalLink size={14} className="ml-1" />
-                </a>
-              </article>
-            </div>
-          </section>
-        </div>
+                <span className="oc-card-format-badge">TOOL</span>
+              </div>
+              <div className="oc-card-title-container mb-2">
+                <h3 className="flex items-center gap-2">
+                  Catering Calculator
+                  <ArrowUpRight size={16} className="text-emerald-600 shrink-0" />
+                </h3>
+              </div>
+              <p className="oc-card-description">
+                Our official calculator for streamlining catering quotes, portion sizes, and customized pricing setup for store catering orders.
+              </p>
+              <a 
+                href="https://cateringcalculator.streamlit.app" 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                className="oc-open-button"
+              >
+                Launch Calculator
+                <ExternalLink size={14} className="ml-1" />
+              </a>
+            </article>
+          </div>
+        </section>
 
         {/* Footer */}
         <footer className="oc-footer">
